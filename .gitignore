@@ -98,3 +98,11 @@ tomcat
 *.zip
 *.sar
 
+
+gradle/
+
+*.gradle
+
+gradlew
+
+gradlew.bat
