@@ -1,4 +1,6 @@
-package Game;
+package Game.objects;
+
+import Game.objects.Dot;
 
 /**
  * class that represents a line in the game, represented as edge in a graph
