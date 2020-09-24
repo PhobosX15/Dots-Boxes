@@ -9,15 +9,17 @@ public class Line {
 
     private Dot source;
     private Dot dest;
+    private boolean vertical;
 
     /**
      * constructor
      * @param source start point of the line
      * @param dest endpoint of the line
      */
-    public Line(Dot source, Dot dest){
+    public Line(Dot source, Dot dest, boolean vertical){
         this.source = dest;
         this.source = dest;
+        this.vertical = vertical;
     }
 
     /**
@@ -54,5 +56,9 @@ public class Line {
      */
     public void setDest(Dot dest){
         this.dest = dest;
+    }
+
+    public boolean isVertical(){
+        return this.vertical;
     }
 }

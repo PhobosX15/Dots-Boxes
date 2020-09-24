@@ -54,12 +54,12 @@ public class Graph {
      * @param dest destination vertex
      * @return true if the edge can be added
      */
-    private boolean addEdge(Dot source, Dot dest){
+    private boolean addEdge(Dot source, Dot dest,boolean vertical ){
         if(!adj.containsKey(source)){
             adj.put(source,new LinkedList<>());
         }
 
-        adj.get(source).add(new Line(source,dest).getDest());
+        adj.get(source).add(new Line(source,dest,vertical).getDest());
         return true;
     }
 
@@ -69,9 +69,9 @@ public class Graph {
      * @param dest endpoint of the dot
      * @return true if the line is added
      */
-    public boolean addLine(Dot source, Dot dest){
-        addEdge(source,dest);
-        addEdge(dest,source);
+    public boolean addLine(Dot source, Dot dest,boolean vertical){
+        addEdge(source,dest, vertical);
+        addEdge(dest,source,vertical);
         return true;
     }
 

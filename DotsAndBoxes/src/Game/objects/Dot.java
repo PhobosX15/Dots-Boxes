@@ -34,4 +34,57 @@ public class Dot {
 
 
 
+    /**
+     * to check if a dot is within the boundaries
+      * @param lower is the lower dots
+     * @param upper upper dot
+     * @return
+     */
+    public boolean isWithin(Dot lower, Dot upper){
+
+        return posX >= lower.posX && posX <= upper.posX
+                && posY >= lower.posY && posY <= upper.posY;
+    }
+
+
+    /**
+     * checks if a dot can be joined with other dot vertically
+     * @param d2 other dot
+     * @return true if they can be joined vertically
+     */
+    private boolean formsVerticalLine(Dot d2){
+        if(this.posX == d2.posX){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * checks if a dot can be joined with other dot horizontally
+     * @param d2 other dot
+     * @return true if they can be joined horizontally
+     */
+    private boolean formsHorizontalLine(Dot d2){
+        if(this.posY == d2.posY){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * checks if a dot can be joined with another dot
+     * @param d2 is another dot
+     * @return true if they can be joined
+     */
+    public boolean canBeJoined(Dot d2){
+        //TODO: check the boundaries
+        if(this == d2){
+            return false;
+        } else if(formsHorizontalLine(d2) || formsVerticalLine(d2)){
+            return true;
+        }
+        return false;
+    }
+
+
 }
