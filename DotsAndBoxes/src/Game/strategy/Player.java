@@ -29,6 +29,8 @@ public class Player{
         this.isTurn = turn;
     }
 
+    public boolean getTurn(){return  this.isTurn; }
+
     /**
      * accesor method for the score of the player
      * @return the score
@@ -56,6 +58,8 @@ public class Player{
     private boolean isWinner(){
         return this.isWinner;
     }
+
+
 
 
 }

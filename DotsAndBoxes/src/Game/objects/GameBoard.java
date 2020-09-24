@@ -23,6 +23,13 @@ public class GameBoard {
         return this.board;
     }
 
+    public int getxSize(){
+        return this.xSize;
+    }
+
+    public int getySize(){
+        return this.ySize;
+    }
 
 
 

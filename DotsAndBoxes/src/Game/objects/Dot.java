@@ -52,7 +52,7 @@ public class Dot {
      * @param d2 other dot
      * @return true if they can be joined vertically
      */
-    private boolean formsVerticalLine(Dot d2){
+    public boolean formsVerticalLine(Dot d2){
         if(this.posX == d2.posX){
             return true;
         }
@@ -64,7 +64,7 @@ public class Dot {
      * @param d2 other dot
      * @return true if they can be joined horizontally
      */
-    private boolean formsHorizontalLine(Dot d2){
+    public boolean formsHorizontalLine(Dot d2){
         if(this.posY == d2.posY){
             return true;
         }
@@ -77,7 +77,6 @@ public class Dot {
      * @return true if they can be joined
      */
     public boolean canBeJoined(Dot d2){
-        //TODO: check the boundaries
         if(this == d2){
             return false;
         } else if(formsHorizontalLine(d2) || formsVerticalLine(d2)){
