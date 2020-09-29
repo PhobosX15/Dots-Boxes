@@ -13,6 +13,7 @@ public class GameBoard {
   private int ySize;
   private boolean[][] board;
   private Box[] possibleBoxes;
+  public int possibleBoxCount;
 
 
     public GameBoard(int xSize, int ySize){
@@ -23,6 +24,8 @@ public class GameBoard {
         possibleBoxes = new Box[xSize];
 
         initializeBoard();
+
+
     }
 
     /**
@@ -31,11 +34,13 @@ public class GameBoard {
     public void initializeBoard(){
 
         if(xSize == 3 && ySize == 3){
+            //possibleBoxCount = 4;
             //initialize the boxes here (provide the coordinates in Dot's c
             // constructor)
             //Box box1 = new Box(new Line(new Dot()))
         }
         else if(xSize == 5 && ySize == 5){
+            //possibleBoxCount =
             //TODO: init the boxes
         }
         else{

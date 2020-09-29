@@ -60,6 +60,7 @@ public class Game {
                    nextPlayer();
                }
                player.addScore(10);
+               board.possibleBoxCount--;
             return true;
         }
 
@@ -98,6 +99,12 @@ public class Game {
 
    }
 
+   public boolean isOver(){
+       if(board.possibleBoxCount == 0){
+           return true;
+       }
+       return false;
+   }
 
    public String winner(){
 
