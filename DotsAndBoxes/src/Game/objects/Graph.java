@@ -31,6 +31,7 @@ public class Graph {
         }
     }
 
+
     /**
      * accessor method for the lines
      * @return the list of the lines

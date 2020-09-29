@@ -5,6 +5,7 @@ package Game.objects;
  */
 public class Dot {
    private int posX, posY; //position of the dot on the gameboard
+    private boolean isOccupied;
 
     /**
      * constructor
@@ -14,6 +15,7 @@ public class Dot {
     public Dot(int posX, int posY){
         this.posX = posX;
         this.posY = posY;
+        this.isOccupied = false;
     }
 
     /**
@@ -52,7 +54,7 @@ public class Dot {
      * @param d2 other dot
      * @return true if they can be joined vertically
      */
-    public boolean formsVerticalLine(Dot d2){
+    private boolean formsVerticalLine(Dot d2){
         if(this.posX == d2.posX){
             return true;
         }
@@ -64,7 +66,7 @@ public class Dot {
      * @param d2 other dot
      * @return true if they can be joined horizontally
      */
-    public boolean formsHorizontalLine(Dot d2){
+    private boolean formsHorizontalLine(Dot d2){
         if(this.posY == d2.posY){
             return true;
         }
@@ -83,6 +85,14 @@ public class Dot {
             return true;
         }
         return false;
+    }
+
+    public boolean isOccupied(){
+        return this.isOccupied;
+    }
+
+    public void setOccupied(boolean o){
+        this.isOccupied = o;
     }
 
 

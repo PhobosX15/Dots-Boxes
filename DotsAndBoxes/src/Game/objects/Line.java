@@ -61,4 +61,11 @@ public class Line {
     public boolean isVertical(){
         return this.vertical;
     }
+
+    public boolean isOccupied(){
+        if(this.source.isOccupied() == true && this.dest.isOccupied() == true){
+            return true;
+        }
+        return false;
+    }
 }

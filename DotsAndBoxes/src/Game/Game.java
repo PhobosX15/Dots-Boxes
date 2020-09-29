@@ -41,25 +41,38 @@ public class Game {
 
     }
 
-
-
+    /**
+     * method to join two dots with a line
+     * @param d1 source
+     * @param d2 dest
+     * @param player player
+     * @return true if the line is joined
+     */
    public boolean join(Dot d1, Dot d2, Player player){
 
         if(player.getTurn() == false){
            throw new IllegalArgumentException("it's other player's turn ! ");
        }
         if(d1.isWithin(lowerBound,upperBound) && d2.isWithin(lowerBound,upperBound) && d1.canBeJoined(d2)){
-
-            if(d1.formsVerticalLine(d2)){
-                moves.addLine(d1,d2,true);
-            }
-
-            moves.addLine(d1,d2,false);
-            nextPlayer();
-            //TODO: add box detection
+               d1.setOccupied(true);
+               d2.setOccupied(true);
+               if(!checkBox()){
+                   nextPlayer();
+               }
+               player.addScore(10);
             return true;
         }
 
+        return false;
+   }
+
+   public boolean checkBox(){
+        Box[] boxes = board.getPossibleBoxes();
+        for(int i = 0; i < board.getPossibleBoxes().length; i++){
+            if(boxes[i].isComplete() == true){
+                return true;
+            }
+        }
         return false;
    }
 
@@ -98,6 +111,18 @@ public class Game {
    }
 
 
+   /*public boolean Boxdetection( Dot d1, Graph moves)
+   {
+       if(d1.getPosX()==0 && d1.getPosY()<board.getySize())
+       {
+           List<Dot> adj= moves.getAdjacents(d1);
+           for( Dot i : adj)
+           {
+
+           }
+           Graph subGraph  = new Graph(moves.getAdjacents(d1));
+       }
+   }*/
 
 
 

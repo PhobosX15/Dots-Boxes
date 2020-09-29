@@ -1,39 +1,58 @@
 package Game.objects;
 
+import Game.strategy.Player;
+
 /**
  * this class represents the box object in the game
  */
 public class Box {
 
-    private Dot bottomLeft;
-    private Dot topLeft;
-    private Dot bottomRight;
-    private Dot topRight;
+    private Line left;
+    private Line right;
+    private Line top;
+    private Line bottom;
+    private Player owner;
+    private Line[] lines ;
 
 
-    public Box(Dot btLeft, Dot topLeft, Dot btRight, Dot topRight){
-        this.bottomLeft = btLeft;
-        this.topLeft = topLeft;
-        this.bottomRight = btRight;
-        this.topRight = topRight;
+    public Box(Line left, Line right, Line top, Line bottom){
+        this.left= left;
+        this.right = right;
+        this.top = top;
+        this.bottom =bottom;
+        this.owner = owner;
+
+        lines = new Line[]{this.left,this.right,this.top,this.bottom};
     }
 
 
-    public boolean canBeCreated(){
-        //TODO: complete this method
+    public boolean isComplete() {
+
+        for (int i = 0; i < lines.length; i++) {
+            if (lines[i].isOccupied()) {
+                return true;
+            }
+        }
         return false;
     }
 
-    public boolean isComplete(){
-        return false;
+
+    public Line[] getEdges(){
+        return this.lines;
     }
+
+    public void setOwner(Player owner){ this.owner = owner; }
+
+    public Player getOwner(){ return  this.owner; }
+
+
     @Override
     public String toString() {
         return "Box{" +
-                "bottomLeft=" + bottomLeft +
-                ", topLeft=" + topLeft +
-                ", topRight=" + topRight +
-                ", bottomRight=" + bottomRight +
+                "left =" + left +
+                ", right =" + right +
+                ", top =" + top +
+                ", bottom=" + bottom +
                 '}';
     }
 }
