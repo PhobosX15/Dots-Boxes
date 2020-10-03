@@ -1,40 +1,53 @@
-package dots;
+package UI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class Main {
+public class UIMainIntro {
 
 	public static final int SCREEN_WIDTH = 1170;
 	public static final int SCREEN_HEIGHT = 720;
 
-	private ImageIcon exitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/exitButtonEntered.png"));
-	private ImageIcon exitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/exitButtonBasic.png"));
+	private ImageIcon exitButtonEnteredImage = new ImageIcon(UIMainIntro.class.getResource("../images/exitButtonEntered.png"));
+	private ImageIcon exitButtonBasicImage = new ImageIcon(UIMainIntro.class.getResource("../images/exitButtonBasic.png"));
 	private JButton exitButton = new JButton(exitButtonBasicImage);
 
 
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new Main();
-
+		new UIMainIntro();
 	}
+
 	public void initializeIntroScreen(JFrame frame){
+		//Add what we need to this menu here
+		JPanel panel = getBackgroundPanel();
+		JButton start = getStartButton(frame);
+		frame.setContentPane(panel);
+		frame.add(start);
 
+		//Then final step
 
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
+
+	private JPanel getBackgroundPanel() {
 		JPanel panel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 
 				super.paintComponent(g);
-				g.drawImage(new ImageIcon(Main.class.getResource("../images/introBackground.jpg")).getImage(),0,0,SCREEN_WIDTH , SCREEN_HEIGHT, this);
+				g.drawImage(new ImageIcon(UIMainIntro.class.getResource("../images/introBackground.jpg")).getImage(),0,0,SCREEN_WIDTH , SCREEN_HEIGHT, this);
 			}
 		};
 		panel.setLayout(null);
+		return panel;
+	}
 
-		ImageIcon startB = new ImageIcon(Main.class.getResource("../images/start.png"));
+	private JButton getStartButton(JFrame frame) {
+		ImageIcon startB = new ImageIcon(UIMainIntro.class.getResource("../images/start.png"));
 		JButton start = new JButton(startB);
 		start.setBounds(990, 550, 100, 100);
 		start.setBorderPainted(false);
@@ -57,28 +70,20 @@ public class Main {
 								   @Override
 								   public void mousePressed(MouseEvent e) {
 										start.setVisible(false);
+										UISelectionMenu selectionMenu = new UISelectionMenu(frame);
+										selectionMenu.initializeSelectionMenu();
+
 								   }
 							   });
-
-
-
-		frame.setContentPane(panel);
-		frame.add(start);
-		//frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-
-
-
-
+		return start;
 	}
 
-	public Main(){
+	public UIMainIntro(){
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(SCREEN_WIDTH,SCREEN_HEIGHT);
 		frame.setTitle("Dots-And-Boxes");
-		frame.setResizable(false);
+		frame.setResizable(true);
 		initializeIntroScreen(frame);
 	}
 

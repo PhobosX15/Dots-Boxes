@@ -1,4 +1,4 @@
-package dots;
+package UI;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -13,26 +13,25 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.xml.stream.events.DTD;
 
 public class Dots extends JFrame {
 
 	private Image screenImage;
 	private Graphics screenGraphic;
 
-	private ImageIcon exitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/exitButtonEntered.png"));
-	private ImageIcon exitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/exitButtonBasic.png"));
-	private ImageIcon startB = new ImageIcon(Main.class.getResource("../images/start.png"));
-	private ImageIcon exitB = new ImageIcon(Main.class.getResource("../images/exit.png"));
-	private ImageIcon leftB = new ImageIcon(Main.class.getResource("../images/left.png"));
-	private ImageIcon rightB = new ImageIcon(Main.class.getResource("../images/right.png"));
-	private ImageIcon humanB = new ImageIcon(Main.class.getResource("../images/user.png"));
-	private ImageIcon aiB = new ImageIcon(Main.class.getResource("../images/ai.png"));
+	private ImageIcon exitButtonEnteredImage = new ImageIcon(UIMainIntro.class.getResource("../images/exitButtonEntered.png"));
+	private ImageIcon exitButtonBasicImage = new ImageIcon(UIMainIntro.class.getResource("../images/exitButtonBasic.png"));
+	private ImageIcon startB = new ImageIcon(UIMainIntro.class.getResource("../images/start.png"));
+	private ImageIcon exitB = new ImageIcon(UIMainIntro.class.getResource("../images/exit.png"));
+	private ImageIcon leftB = new ImageIcon(UIMainIntro.class.getResource("../images/left.png"));
+	private ImageIcon rightB = new ImageIcon(UIMainIntro.class.getResource("../images/right.png"));
+	private ImageIcon humanB = new ImageIcon(UIMainIntro.class.getResource("../images/user.png"));
+	private ImageIcon aiB = new ImageIcon(UIMainIntro.class.getResource("../images/ai.png"));
 	// private Image selectedImage = new
 	// ImageIcon(Main.class.getResource("../images/33.png")).getImage();
 
-	private Image background = new ImageIcon(Main.class.getResource("../images/introBackground.jpg")).getImage();
-	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
+	private Image background = new ImageIcon(UIMainIntro.class.getResource("../images/introBackground.jpg")).getImage();
+	private JLabel menuBar = new JLabel(new ImageIcon(UIMainIntro.class.getResource("../images/menuBar.png")));
 
 	private JButton exitButton = new JButton(exitButtonBasicImage);
 	private JButton start = new JButton(startB);
@@ -53,7 +52,7 @@ public class Dots extends JFrame {
 	public Dots() {
 		setUndecorated(true);
 		setTitle("Dots-And-Boxes");
-		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		setSize(UIMainIntro.SCREEN_WIDTH, UIMainIntro.SCREEN_HEIGHT);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -118,7 +117,7 @@ public class Dots extends JFrame {
 				right.setVisible(true);
 				human.setVisible(true);
 				ai.setVisible(true);
-				background = new ImageIcon(Main.class.getResource("../images/dotsnboxes.jpg")).getImage();
+				background = new ImageIcon(UIMainIntro.class.getResource("../images/dotsnboxes.jpg")).getImage();
 				mainScreen = true;
 			}
 		});
@@ -273,7 +272,7 @@ public class Dots extends JFrame {
 	}
 
 	public void paint(Graphics g) {
-		screenImage = createImage(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		screenImage = createImage(UIMainIntro.SCREEN_WIDTH, UIMainIntro.SCREEN_HEIGHT);
 		screenGraphic = screenImage.getGraphics();
 		screenDraw(screenGraphic);
 		g.drawImage(screenImage, 0, 0, null);
@@ -289,7 +288,7 @@ public class Dots extends JFrame {
 	}
 
 	public void selectGrid(int nowSelected) {
-		selectedImage = new ImageIcon(Main.class.getResource("../images/" + gridList.get(nowSelected).getGridImage()))
+		selectedImage = new ImageIcon(UIMainIntro.class.getResource("../images/" + gridList.get(nowSelected).getGridImage()))
 				.getImage();
 
 	}
@@ -318,7 +317,7 @@ public class Dots extends JFrame {
 		right.setVisible(false);
 		human.setVisible(false);
 		ai.setVisible(false);
-		background = new ImageIcon(Main.class.getResource("../images/" + gridList.get(nowSelected).getGridImage()))
+		background = new ImageIcon(UIMainIntro.class.getResource("../images/" + gridList.get(nowSelected).getGridImage()))
 				.getImage();
 
 	}

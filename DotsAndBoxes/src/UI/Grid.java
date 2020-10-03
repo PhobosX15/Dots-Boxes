@@ -1,4 +1,4 @@
-package dots;
+package UI;
 
 public class Grid {
 	

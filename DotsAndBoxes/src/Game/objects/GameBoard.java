@@ -1,10 +1,7 @@
 package Game.objects;
 
 import Game.Game;
-import Game.strategy.GameStrategy;
-import Game.strategy.Human;
-import Game.strategy.Player;
-
+import Game.strategy.*;
 import java.util.List;
 
 public class GameBoard {

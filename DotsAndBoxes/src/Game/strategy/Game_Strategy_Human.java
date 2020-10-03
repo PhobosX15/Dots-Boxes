@@ -1,8 +1,15 @@
 package Game.strategy;
 
 import Game.objects.*;
+import UI.UIGameBoard;
 
-public class Game_Strategy_Human implements GameStrategy {
+public class Game_Strategy_Human extends GameStrategy {
+
+
+    public Game_Strategy_Human(boolean isPlayer1) {
+        super("Human",isPlayer1);
+    }
+
     /**
      * methods that check if a move is valid
      * game - combine everything
@@ -12,6 +19,15 @@ public class Game_Strategy_Human implements GameStrategy {
      */
 
     public void makeMove(){
+        UIGameBoard.mouseEnabled=true;
+        while(isTurnToPlay){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        UIGameBoard.mouseEnabled=false;
 
     }
 
