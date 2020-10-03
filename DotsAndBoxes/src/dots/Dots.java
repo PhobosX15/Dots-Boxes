@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.xml.stream.events.DTD;
 
 public class Dots extends JFrame {
 
@@ -320,5 +321,9 @@ public class Dots extends JFrame {
 		background = new ImageIcon(Main.class.getResource("../images/" + gridList.get(nowSelected).getGridImage()))
 				.getImage();
 
+	}
+
+	public static void main(String[] args) {
+		new Dots();
 	}
 }
