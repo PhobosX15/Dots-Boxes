@@ -43,7 +43,10 @@ public class UISelectionMenu {
         frame.add(startGameButton);
         frame.add(textField);
         frame.add(gameLabel);
-        frame.add(getSelectorButtons());
+        JButton [] buttons = getSelectorButtons();
+        for(int i = 0; i<buttons.length;i++){
+            frame.add(buttons[i]);
+        }
         //Then final step
         frame.setVisible(true);
     }
@@ -110,8 +113,8 @@ public class UISelectionMenu {
         });
         return textField;
     }
-    private JPanel getSelectorButtons(){
-        JPanel panel = new JPanel(new GridLayout(3,2));
+    private JButton []  getSelectorButtons(){
+        JButton [] buttons = new JButton[6];
 
         ImageIcon p1Human = new ImageIcon(UIMainIntro.class.getResource("../images/Human Player Button.png"));
         JButton bp1Human = new JButton(p1Human);
@@ -168,18 +171,24 @@ public class UISelectionMenu {
                 updateGameLabel();
             }
         });
+        int x=380,y=170,w=125,h=60, x2=650;
+        bp1Human.setBounds(x,y,w,h);
+        bp2Human.setBounds(x2, y,w,h);
+        bp1Ai1.setBounds(x, (int) ( y+100),w,h);
+        bp2Ai1.setBounds(x2, (int) ( y+100),w,h);
+        bp1Ai2.setBounds(x, (int) ( y+200),w,h);
+        bp2Ai2.setBounds(x2, (int) ( y+200),w,h);
+        buttons[0]=(bp1Human);
+        buttons[1]=(bp2Human);
+        buttons[2]=(bp1Ai1);
+        buttons[3]=(bp2Ai1);
+        buttons[4]=(bp1Ai2);
+        buttons[5]=(bp2Ai2);
 
-        panel.add(bp1Human);
-        panel.add(bp2Human);
-        panel.add(bp1Ai1);
-        panel.add(bp2Ai1);
-        panel.add(bp1Ai2);
-        panel.add(bp2Ai2);
-        panel.setBounds(375,175,265,180);
-        return panel;
+        return buttons;
     }
 
-    private JButton getStartGameButton() {
+    private JButton  getStartGameButton() {
         ImageIcon startB = new ImageIcon(UIMainIntro.class.getResource("../images/start.png"));
         JButton startGameBoard = new JButton(startB);
         startGameBoard.setBounds(990, 550, 100, 100);
