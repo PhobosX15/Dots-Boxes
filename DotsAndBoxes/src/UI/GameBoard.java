@@ -252,17 +252,23 @@ public class GameBoard {
             return new Edge();
         }
 
+        public boolean isFilled(Edge edge){
+        if(edge.isHorizontal()){
+            return isSetHEdge[edge.getX()][edge.getY()];
+        }
+        return isSetVEdge[edge.getX()][edge.getY()];
+        }
+
     /**
      * fills a horizontal edge, by setting isSetHedge to true, so we can visualize
-     * @param x coordinate
-     * @param y coordinate
+     * @param edge
      * @param player1 /player 2
      */
-        public void fillHorizontalEdge(int x, int y, boolean player1){
+        public void fillHorizontalEdge(Edge edge, boolean player1){
         //mark the edge within given coordinates as filled
-            isSetHEdge[x][y] = true;
+            isSetHEdge[edge.getX()][edge.getY()] = true;
             //check if it forms a box
-            if(isBoxComplete(x,y,true)){
+            if(isBoxComplete(edge,true)){
                 if(player1){
                     player1Score += 10;
                 }
@@ -274,14 +280,13 @@ public class GameBoard {
 
     /**
      * fills a vertical edge, by setting isSetVedge to true, so we can visualize
-     * @param x coordinate
-     * @param y coordinate
+     * @param edge
      * @param player1 /player 2
      */
-        public void fillVerticalEdge(int x, int y, boolean player1){
-        isSetVEdge[x][y] = true;
+        public void fillVerticalEdge(Edge edge, boolean player1){
+        isSetVEdge[edge.getX()][edge.getY()] = true;
 
-        if(isBoxComplete(x,y,false)){
+        if(isBoxComplete(edge,false)){
                 if(player1){
                     player1Score += 10;
                 }
@@ -292,21 +297,20 @@ public class GameBoard {
 
     /**
      * checks if a box is complete by comparing the filled edges with a newly filled edge
-     * @param x coordinate of the edge
-     * @param y coordinate of the edge
+     * @param edge
      * @param horizontal /vertical
      * @return true if a box is detected.
      */
-        public boolean isBoxComplete(int x, int y,boolean horizontal) {
+        public boolean isBoxComplete(Edge edge,boolean horizontal) {
             if (horizontal) {
-                if (y < bound - 1 && isSetVEdge[x][y] && isSetVEdge[x + 1][y] && isSetHEdge[x][y + 1]) {
-                    isSetBox[x][y] = true;
+                if (edge.getY() < bound - 1 && isSetVEdge[edge.getX()][edge.getY()] && isSetVEdge[edge.getX()+ 1][edge.getY()] && isSetHEdge[edge.getX()][edge.getY() + 1]) {
+                    isSetBox[edge.getX()][edge.getY()] = true;
                     possibleBoxCount--;
                     return true;
                 }
             } else {
-                if (y < bound - 1 && isSetHEdge[x][y] && isSetHEdge[x + 1][y] && isSetVEdge[x][y + 1]) {
-                    isSetBox[x][y] = true;
+                if (edge.getY() < bound - 1 && isSetHEdge[edge.getX()][edge.getY()] && isSetHEdge[edge.getX() + 1][edge.getY()] && isSetVEdge[edge.getX()][edge.getY() + 1]) {
+                    isSetBox[edge.getX()][edge.getY()] = true;
                     possibleBoxCount--;
                     return true;
 
@@ -314,7 +318,7 @@ public class GameBoard {
             }
             return false;
         }
-        
+
         public void switchPlayers(boolean player1){
         if(player1) player1 = false;
         }
@@ -330,6 +334,7 @@ public class GameBoard {
         public int getPlayer2Score(){
         return this.player2Score;
         }
+
 
 
 
