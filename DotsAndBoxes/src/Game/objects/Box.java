@@ -1,10 +1,13 @@
+/*
 package Game.objects;
 
 import Game.strategy.Player;
 
+*/
 /**
  * this class represents the box object in the game
- */
+ *//*
+
 public class Box {
 
     private Line left;
@@ -56,3 +59,4 @@ public class Box {
                 '}';
     }
 }
+*/

@@ -216,7 +216,7 @@ public class UISelectionMenu {
                     //todo when selection is not made
                 }else {
                     length = Integer.parseInt(textField.getText());
-                    UIGameBoard gameBoard = new UIGameBoard(length,frame,player1,player2);
+                    GameBoard gameBoard = new GameBoard(length,frame,player1,player2);
                 }
             }
         });

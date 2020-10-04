@@ -1,16 +1,16 @@
-package UI;
+package Game.objects;
 
-public class UIEdge {
+public class Edge {
 
     private int x, y;
     private boolean horizontal;
 
-    UIEdge() {
+    public Edge() {
         x = y = -1;
         horizontal = false;
     }
 
-    UIEdge(int x, int y, boolean horizontal) {
+    public Edge(int x, int y, boolean horizontal) {
         this.x = x;
         this.y = y;
         this.horizontal = horizontal;
@@ -27,6 +27,7 @@ public class UIEdge {
     public int getY() {
         return y;
     }
+
 
     @Override
     public String toString() {

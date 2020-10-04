@@ -1,5 +1,6 @@
 package UI;
 
+import Game.objects.Edge;
 import Game.strategy.GameStrategy;
 
 import javax.swing.*;
@@ -10,11 +11,15 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.jar.JarEntry;
 
-public class UIGameBoard {
+public class GameBoard {
     private JFrame frame;
     private  GameStrategy player1;
     private GameStrategy player2;
+    private int player1Score, player2Score;
     private int n;
+    private int bound = n;
+    private int possibleBoxCount;
+
 
     /**
      * fields for the board generation
@@ -22,7 +27,7 @@ public class UIGameBoard {
     private final static int size = 8;
     private final static int dist = 40;
     private JLabel[][] hEdge, vEdge, box;
-    private boolean[][] isSetHEdge, isSetVEdge;
+    private boolean[][] isSetHEdge, isSetVEdge,isSetBox;
     /**
      * fields required for playing the board
      */
@@ -46,7 +51,7 @@ public class UIGameBoard {
         @Override
         public void mouseEntered(MouseEvent mouseEvent) {
             if (!mouseEnabled) return;
-            UIEdge location = getSource(mouseEvent.getSource());
+            Edge location = getSource(mouseEvent.getSource());
             int x = location.getX(), y = location.getY();
             if (location.isHorizontal()) {
                 if (isSetHEdge[x][y]) return;
@@ -60,7 +65,7 @@ public class UIGameBoard {
         @Override
         public void mouseExited(MouseEvent mouseEvent) {
             if(!mouseEnabled) return;
-            UIEdge location = getSource(mouseEvent.getSource());
+            Edge location = getSource(mouseEvent.getSource());
             int x=location.getX(), y=location.getY();
             if(location.isHorizontal()) {
                 if(isSetHEdge[x][y]) return;
@@ -74,12 +79,15 @@ public class UIGameBoard {
     };
     public static boolean mouseEnabled = true;
 
-    public UIGameBoard(int n, JFrame frame, GameStrategy player1, GameStrategy player2) {
+    public GameBoard(int n, JFrame frame, GameStrategy player1, GameStrategy player2) {
         this.n=n;
         this.frame = frame;
         this.player1=player1;
         this.player2=player2;
         initializeUIGameBoard();
+        this.player1Score = 0;
+        this.player2Score = 0;
+        this.possibleBoxCount  = (n-1) * (n-1);
     }
 
     public void initializeUIGameBoard (){
@@ -232,19 +240,104 @@ public class UIGameBoard {
         exitButton.setBounds(990, 550, 100, 100);
         return  exitButton;
     }
-        private UIEdge getSource(Object object) {
+        private Edge getSource(Object object) {
             for(int i=0; i<(n-1); i++)
                 for(int j=0; j<n; j++)
                     if(hEdge[i][j] == object)
-                        return new UIEdge(i,j,true);
+                        return new Edge(i,j,true);
             for(int i=0; i<n; i++)
                 for(int j=0; j<(n-1); j++)
                     if(vEdge[i][j] == object)
-                        return new UIEdge(i,j,false);
-            return new UIEdge();
+                        return new Edge(i,j,false);
+            return new Edge();
         }
 
-    private void processMove(UIEdge location) {
+    /**
+     * fills a horizontal edge, by setting isSetHedge to true, so we can visualize
+     * @param x coordinate
+     * @param y coordinate
+     * @param player1 /player 2
+     */
+        public void fillHorizontalEdge(int x, int y, boolean player1){
+        //mark the edge within given coordinates as filled
+            isSetHEdge[x][y] = true;
+            //check if it forms a box
+            if(isBoxComplete(x,y,true)){
+                if(player1){
+                    player1Score += 10;
+                }
+                player2Score +=10;
+            }
+            //if the box is not complete switch players
+            switchPlayers(player1);
+        }
+
+    /**
+     * fills a vertical edge, by setting isSetVedge to true, so we can visualize
+     * @param x coordinate
+     * @param y coordinate
+     * @param player1 /player 2
+     */
+        public void fillVerticalEdge(int x, int y, boolean player1){
+        isSetVEdge[x][y] = true;
+
+        if(isBoxComplete(x,y,false)){
+                if(player1){
+                    player1Score += 10;
+                }
+                player2Score +=10;
+            }
+            switchPlayers(player1);
+        }
+
+    /**
+     * checks if a box is complete by comparing the filled edges with a newly filled edge
+     * @param x coordinate of the edge
+     * @param y coordinate of the edge
+     * @param horizontal /vertical
+     * @return true if a box is detected.
+     */
+        public boolean isBoxComplete(int x, int y,boolean horizontal) {
+            if (horizontal) {
+                if (y < bound - 1 && isSetVEdge[x][y] && isSetVEdge[x + 1][y] && isSetHEdge[x][y + 1]) {
+                    isSetBox[x][y] = true;
+                    possibleBoxCount--;
+                    return true;
+                }
+            } else {
+                if (y < bound - 1 && isSetHEdge[x][y] && isSetHEdge[x + 1][y] && isSetVEdge[x][y + 1]) {
+                    isSetBox[x][y] = true;
+                    possibleBoxCount--;
+                    return true;
+
+                }
+            }
+            return false;
+        }
+        
+        public void switchPlayers(boolean player1){
+        if(player1) player1 = false;
+        }
+
+        public int getPossibleBoxCount(){
+        return this.possibleBoxCount;
+        }
+
+        public int getPlayer1Score(){
+        return this.player1Score;
+        }
+
+        public int getPlayer2Score(){
+        return this.player2Score;
+        }
+
+
+
+
+
+
+
+    private void processMove(Edge location) {
         int x=location.getX(), y=location.getY();
 //        ArrayList<Point> ret;
 //        if(location.isHorizontal()) {

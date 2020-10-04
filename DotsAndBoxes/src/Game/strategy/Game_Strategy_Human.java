@@ -1,7 +1,8 @@
 package Game.strategy;
 
 import Game.objects.*;
-import UI.UIGameBoard;
+import UI.GameBoard;
+
 
 public class Game_Strategy_Human extends GameStrategy {
 
@@ -19,7 +20,7 @@ public class Game_Strategy_Human extends GameStrategy {
      */
 
     public void makeMove(){
-        UIGameBoard.mouseEnabled=true;
+        GameBoard.mouseEnabled=true;
         while(isTurnToPlay){
             try {
                 Thread.sleep(100);
@@ -27,17 +28,17 @@ public class Game_Strategy_Human extends GameStrategy {
                 e.printStackTrace();
             }
         }
-        UIGameBoard.mouseEnabled=false;
+        GameBoard.mouseEnabled=false;
 
     }
 
     /**
      * Each Strategy needs to receive a graph to be able to decide where to place an edge
-     * @param graph
+     * @param gameBoard
      * @return Line selected from two dots by user
      */
     @Override
-    public Line makeMove(Graph graph) {
+    public Edge makeMove(GameBoard gameBoard) {
         addListeners();
         return null;
     }

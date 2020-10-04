@@ -1,7 +1,8 @@
 package Game.strategy;
 
-import Game.objects.Graph;
-import Game.objects.Line;
+import Game.objects.Edge;
+import UI.GameBoard;
+
 
 import java.util.Objects;
 
@@ -13,11 +14,11 @@ public abstract class GameStrategy {
     /**
      * Each Strategy needs to receive a graph to be able to decide where to place an edge
      *
-     * @param graph
+     *
      * @return ##todo should we return edge or void, should we pass the graph or a copy of the graph ??
      */
     //should return edge
-    public Line makeMove(Graph graph) {
+    public Edge makeMove(GameBoard board) {
         return null;
     }
 
