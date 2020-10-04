@@ -1,4 +1,4 @@
-package Game.objects;
+package UI;
 
 public class Edge {
 

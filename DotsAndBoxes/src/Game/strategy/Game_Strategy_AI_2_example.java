@@ -1,13 +1,15 @@
 package Game.strategy;
 
-import Game.objects.Edge;
+import UI.Edge;
 import UI.GameBoard;
+
+import java.awt.*;
 
 
 public class Game_Strategy_AI_2_example extends GameStrategy {
 
-    public Game_Strategy_AI_2_example(boolean isPlayer1) {
-        super( "Ai 2", isPlayer1);
+    public Game_Strategy_AI_2_example(boolean isPlayer1, Color color) {
+        super( "Ai 2", isPlayer1, color);
     }
 
     /**

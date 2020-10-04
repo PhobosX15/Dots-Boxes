@@ -4,32 +4,34 @@ import Game.strategy.GameStrategy;
 import Game.strategy.Game_Strategy_AI_1_example;
 import Game.strategy.Game_Strategy_AI_2_example;
 import Game.strategy.Game_Strategy_Human;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
 public class UISelectionMenu {
-    private JFrame frame;
-    public  static ArrayList<JButton> selectStrategyButtons = new ArrayList<>();
+    public JFrame frame;
+    public static ArrayList<JButton> selectStrategyButtons = new ArrayList<>();
     JTextField textField;
-
 
 
     /**
      * The following variables are the selection variables
      */
-    int length =10;// -1;
-    GameStrategy player1 = new Game_Strategy_Human(true);
-    GameStrategy player2 = new Game_Strategy_Human(false);
+    int length = 10;// -1;
+    GameStrategy player1 = new Game_Strategy_Human(true, Color.CYAN);
+    GameStrategy player2 = new Game_Strategy_Human(false, Color.GREEN);
     JLabel gameLabel = getGameLabel();
+    GameBoard gameBoard;
+    public boolean isNotGamePlay = true;
 
     public UISelectionMenu(JFrame frame) {
-        this.frame =frame;
+        this.frame = frame;
 
     }
 
-    public void initializeSelectionMenu(){
+    public void initializeSelectionMenu() {
 
         frame.getContentPane().removeAll();
         frame.revalidate();
@@ -43,35 +45,42 @@ public class UISelectionMenu {
         frame.add(startGameButton);
         frame.add(textField);
         frame.add(gameLabel);
-        JButton [] buttons = getSelectorButtons();
-        for(int i = 0; i<buttons.length;i++){
+        JButton[] buttons = getSelectorButtons();
+        for (int i = 0; i < buttons.length; i++) {
             frame.add(buttons[i]);
         }
         //Then final step
         frame.setVisible(true);
+
     }
 
     private JLabel getGameLabel() {
         JLabel label = new JLabel(player1.title + " Vs " + player2.title);
         label.setFont(new Font("Arial", Font.BOLD, 50));
         label.setOpaque(false);
-        label.setBounds(380,75,500,85);
+        label.setBounds(380, 75, 900, 85);
         return label;
     }
-    private void updateGameLabel(){
+
+    private void updateGameLabel() {
         gameLabel.setText(player1.title + " Vs " + player2.title);
         gameLabel.updateUI();
     }
 
+    public void warningGameLabel() {
+        gameLabel.setText("Enter Valid Board Size");
+        gameLabel.updateUI();
+    }
+
     private JTextField getTextField() {
-        JTextField textField = new JTextField("Board Size:");
+        JTextField textField = new JTextField("Board Size: Natural Number");
         Font fieldFont = new Font("Arial", Font.PLAIN, 20);
         textField.setFont(fieldFont);
         textField.setBackground(Color.white);
         textField.setForeground(Color.gray.brighter());
         textField.setColumns(30);
-        textField.setBounds(400,30,400,30);
-        textField.addActionListener(new ActionListener(){
+        textField.setBounds(400, 30, 400, 30);
+        textField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
@@ -80,7 +89,7 @@ public class UISelectionMenu {
 
             }
         });
-        textField.addMouseListener(new MouseListener(){
+        textField.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 // TODO Auto-generated method stub
@@ -113,15 +122,16 @@ public class UISelectionMenu {
         });
         return textField;
     }
-    private JButton []  getSelectorButtons(){
-        JButton [] buttons = new JButton[6];
+
+    private JButton[] getSelectorButtons() {
+        JButton[] buttons = new JButton[6];
 
         ImageIcon p1Human = new ImageIcon(UIMainIntro.class.getResource("../images/Human Player Button.png"));
         JButton bp1Human = new JButton(p1Human);
         bp1Human.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player1 = new Game_Strategy_Human(true);
+                player1 = new Game_Strategy_Human(true, Color.CYAN);
                 updateGameLabel();
             }
         });
@@ -130,7 +140,7 @@ public class UISelectionMenu {
         bp1Ai1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player1 = new Game_Strategy_AI_1_example(true);
+                player1 = new Game_Strategy_AI_1_example(true, Color.CYAN);
                 updateGameLabel();
             }
         });
@@ -139,7 +149,7 @@ public class UISelectionMenu {
         bp1Ai2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player1 = new Game_Strategy_AI_2_example(true);
+                player1 = new Game_Strategy_AI_2_example(true, Color.CYAN);
                 updateGameLabel();
             }
         });
@@ -148,7 +158,7 @@ public class UISelectionMenu {
         bp2Human.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player2 = new Game_Strategy_Human(false);
+                player2 = new Game_Strategy_Human(false, Color.GREEN);
                 updateGameLabel();
 
             }
@@ -158,7 +168,7 @@ public class UISelectionMenu {
         bp2Ai1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player2 = new Game_Strategy_AI_1_example(false);
+                player2 = new Game_Strategy_AI_1_example(false, Color.GREEN);
                 updateGameLabel();
             }
         });
@@ -167,28 +177,28 @@ public class UISelectionMenu {
         bp2Ai2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player2 = new Game_Strategy_AI_2_example(false);
+                player2 = new Game_Strategy_AI_2_example(false, Color.GREEN);
                 updateGameLabel();
             }
         });
-        int x=380,y=170,w=125,h=60, x2=650;
-        bp1Human.setBounds(x,y,w,h);
-        bp2Human.setBounds(x2, y,w,h);
-        bp1Ai1.setBounds(x, (int) ( y+100),w,h);
-        bp2Ai1.setBounds(x2, (int) ( y+100),w,h);
-        bp1Ai2.setBounds(x, (int) ( y+200),w,h);
-        bp2Ai2.setBounds(x2, (int) ( y+200),w,h);
-        buttons[0]=(bp1Human);
-        buttons[1]=(bp2Human);
-        buttons[2]=(bp1Ai1);
-        buttons[3]=(bp2Ai1);
-        buttons[4]=(bp1Ai2);
-        buttons[5]=(bp2Ai2);
+        int x = 380, y = 170, w = 125, h = 60, x2 = 650;
+        bp1Human.setBounds(x, y, w, h);
+        bp2Human.setBounds(x2, y, w, h);
+        bp1Ai1.setBounds(x, (int) (y + 100), w, h);
+        bp2Ai1.setBounds(x2, (int) (y + 100), w, h);
+        bp1Ai2.setBounds(x, (int) (y + 200), w, h);
+        bp2Ai2.setBounds(x2, (int) (y + 200), w, h);
+        buttons[0] = (bp1Human);
+        buttons[1] = (bp2Human);
+        buttons[2] = (bp1Ai1);
+        buttons[3] = (bp2Ai1);
+        buttons[4] = (bp1Ai2);
+        buttons[5] = (bp2Ai2);
 
         return buttons;
     }
 
-    private JButton  getStartGameButton() {
+    private JButton getStartGameButton() {
         ImageIcon startB = new ImageIcon(UIMainIntro.class.getResource("../images/start.png"));
         JButton startGameBoard = new JButton(startB);
         startGameBoard.setBounds(990, 550, 100, 100);
@@ -197,29 +207,7 @@ public class UISelectionMenu {
         startGameBoard.setFocusPainted(false);
         startGameBoard.setVisible(true);
 
-        startGameBoard.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                startGameBoard.setIcon(startB);
-                startGameBoard.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                startGameBoard.setIcon(startB);
-                startGameBoard.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(length<1 || player1 == null || player2 == null){
-                    //todo when selection is not made
-                }else {
-                    length = Integer.parseInt(textField.getText());
-                    GameBoard gameBoard = new GameBoard(length,frame,player1,player2);
-                }
-            }
-        });
+        startGameBoard.addMouseListener(new StartGameMouseAdapter(startGameBoard,this));
         return startGameBoard;
     }
 
@@ -229,31 +217,11 @@ public class UISelectionMenu {
             protected void paintComponent(Graphics g) {
 
                 super.paintComponent(g);
-                ImageIcon img = new ImageIcon("C:/CODE101/project2.1/DotsAndBoxes/src/images/dotsnboxes.jpg","blah");
-                g.drawImage(img.getImage(),0,0, UIMainIntro.SCREEN_WIDTH,UIMainIntro.SCREEN_HEIGHT,this);
+                ImageIcon img = new ImageIcon("C:/CODE101/project2.1/DotsAndBoxes/src/images/dotsnboxes.jpg", "blah");
+                g.drawImage(img.getImage(), 0, 0, UIMainIntro.SCREEN_WIDTH, UIMainIntro.SCREEN_HEIGHT, this);
             }
         };
         panel.setLayout(null);
         return panel;
     }
 }
-//class PlayerSelectionMouseAdapter extends MouseAdapter {
-//    @Override
-//    public void mouseEntered(MouseEvent e) {
-//
-//    }
-//
-//    @Override
-//    public void mouseExited(MouseEvent e) {
-//
-//    }
-//
-//    @Override
-//    public void mousePressed(MouseEvent e) {
-//
-//        Object tmp = e.getSource();
-//        for (int i = 0; i < UISelectionMenu.selectStrategyButtons.size(); i++) {
-//
-//        }
-//    }
-//}

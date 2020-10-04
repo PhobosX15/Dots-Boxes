@@ -1,15 +1,15 @@
 package Game.strategy;
 
-import Game.objects.Edge;
+import UI.Edge;
 import UI.GameBoard;
 
-
-import java.util.Objects;
+import java.awt.*;
 
 public abstract class GameStrategy {
-    public boolean isTurnToPlay = false;
+    public Color color;
     public boolean isPlayer1;
     public String title;
+    int score = 0;
 
     /**
      * Each Strategy needs to receive a graph to be able to decide where to place an edge
@@ -23,9 +23,10 @@ public abstract class GameStrategy {
     }
 
 
-    public GameStrategy(String title, boolean isPlayer1){
+    public GameStrategy(String title, boolean isPlayer1, Color color){
         this.title =title;
         this.isPlayer1 = isPlayer1;
+        this.color = color;
     }
 
     @Override
