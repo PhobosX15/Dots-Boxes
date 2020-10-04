@@ -34,7 +34,6 @@ public class StartGameMouseAdapter extends MouseAdapter {
             try {
                 menu.length = Integer.parseInt(menu.textField.getText());
                 menu.gameBoard = new GameBoard(menu.length, menu.frame, menu.player1, menu.player2);
-                menu.isNotGamePlay =false;
             } catch (NumberFormatException hsdkf) {
                 menu.warningGameLabel();
             }

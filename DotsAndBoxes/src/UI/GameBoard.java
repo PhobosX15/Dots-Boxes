@@ -9,7 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class GameBoard {
-    private JFrame frame;
+    public JFrame frame;
     private GameStrategy player1;
     private GameStrategy player2;
     private GameStrategy currentPlayer;
@@ -101,23 +101,23 @@ public class GameBoard {
         frame.setContentPane(newBackgroundImagePanel());
         frame.add(setUpNewBoard());
         frame.add(newBackToMenuButton());
+        frame.getContentPane().validate();
         frame.setVisible(true);
-        //manageGame();
+      // manageGame();
     }
 
     public void manageGame() {
         while (possibleBoxCount > 0) {
             if (currentPlayer.title.equals("Human")) {
-
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             } else {
                 processMove(currentPlayer.makeMove(this));
             }
 
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
         new UISelectionMenu(frame).initializeSelectionMenu();
     }
