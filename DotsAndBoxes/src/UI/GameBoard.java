@@ -103,7 +103,7 @@ public class GameBoard {
         frame.add(newBackToMenuButton());
         frame.getContentPane().validate();
         frame.setVisible(true);
-      // manageGame();
+        //manageGame();
     }
 
     public void manageGame() {
@@ -246,13 +246,6 @@ public class GameBoard {
         return new Edge();
     }
 
-    public boolean isFilled(Edge edge) {
-        if (edge.isHorizontal()) {
-            return isSetHEdge[edge.getX()][edge.getY()];
-        }
-        return isSetVEdge[edge.getX()][edge.getY()];
-    }
-
     /**
      * fills a an edge if possible
      *
@@ -274,26 +267,20 @@ public class GameBoard {
         }
     }
 
-    /**
-     * checks if a box is complete by comparing the filled edges around it
-     *
-     * @param x,y location of box
-     * @return true if a box is detected as set
-     */
-    public boolean isBoxComplete(int x, int y) {
-        if (isSetBox[x][y]) {
-            return true;
-        }
-        if ((isSetHEdge[x][y]) && (isSetVEdge[x][y]) && (isSetHEdge[x][y+1]) && (isSetVEdge[x+1][y])) {
-            isSetBox[x][y]=true;
-            box[x][y].setBackground(currentPlayer.color);
-            possibleBoxCount--;
-            return true;
+    public boolean onlyFillBoxIfPossible(){
+        for (int i = 0; i < isSetBox.length; i++) {
+            for (int j = 0; j < isSetBox[0].length; j++) {
+                if ((isSetHEdge[i][j]) && (isSetVEdge[i][j]) && (isSetHEdge[i][j+1]) && (isSetVEdge[i+1][j])&&!isSetBox[i][j]) {
+                    isSetBox[i][j]=true;
+                    box[i][j].setBackground(currentPlayer.color);
+                    possibleBoxCount--;
+                    return true;
+                }
+            }
         }
         return false;
-
-
     }
+
 
     public void switchPlayers() {
         if (currentPlayer.isPlayer1) {
@@ -313,26 +300,16 @@ public class GameBoard {
         }
     }
 
-    public int getPossibleBoxCount() {
-        return this.possibleBoxCount;
-    }
 
     private boolean processMove(Edge location) {
 
         if (fillEdge(location)) {
-            fixBoxes();
-            switchPlayers();
+            if(!onlyFillBoxIfPossible()) {
+                switchPlayers();
+            }
             return true;
         } else {
             return false;
-        }
-    }
-
-    private void fixBoxes() {
-        for (int i = 0; i < isSetBox.length; i++) {
-            for (int j = 0; j < isSetBox[0].length; j++) {
-                isBoxComplete(i,j);
-            }
         }
     }
 }
