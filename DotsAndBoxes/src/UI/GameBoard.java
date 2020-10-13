@@ -15,6 +15,9 @@ public class GameBoard {
     private GameStrategy currentPlayer;
     private int n;
     private int possibleBoxCount;
+    private int score_Player1;
+	private int score_Player2;
+	private JLabel scoreLabel;
 
 
     /**
@@ -79,13 +82,15 @@ public class GameBoard {
             }
         }
     };
-
+	
 
     public GameBoard(int n, JFrame frame, GameStrategy player1, GameStrategy player2) {
         this.n = n;
         this.frame = frame;
         this.player1 = player1;
+        score_Player1 = 0;
         this.player2 = player2;
+        score_Player2 = 0;
         currentPlayer = this.player1;
         this.possibleBoxCount = (n - 1) * (n - 1);
         initializeUIGameBoard();
@@ -100,11 +105,30 @@ public class GameBoard {
 
         frame.setContentPane(newBackgroundImagePanel());
         frame.add(setUpNewBoard());
+        
+        frame.add(initScoreLabel());
+
         frame.add(newBackToMenuButton());
         frame.getContentPane().validate();
         frame.setVisible(true);
         //manageGame();
     }
+    
+	private JLabel initScoreLabel() {
+		scoreLabel = new JLabel("<html><p style=\"font-size:25px\">Score: </p>"
+				+ "<p style=\"color:#00FFFF\">Player 1: " + score_Player1 + "<br/></p>"
+				+ "<p style=\"color:green\">Player 2: " + score_Player2 + "<br/></p>" + "</html>",
+				SwingConstants.CENTER);
+		scoreLabel.setBounds(0, 0, 100, 100);
+		return scoreLabel;
+	}
+	
+	private void updateScore() {
+		frame.remove(scoreLabel);
+		frame.add(initScoreLabel());
+		frame.revalidate();
+		frame.repaint();
+	}
 
     public void manageGame() {
         while (possibleBoxCount > 0) {
@@ -274,6 +298,13 @@ public class GameBoard {
                     isSetBox[i][j]=true;
                     box[i][j].setBackground(currentPlayer.color);
                     possibleBoxCount--;
+                    if (currentPlayer.isPlayer1) {
+        				score_Player1++;
+        				updateScore();
+        			} else {
+        				score_Player2++;
+        				updateScore();
+        			}
                     return true;
                 }
             }
