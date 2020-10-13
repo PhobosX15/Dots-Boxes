@@ -292,6 +292,7 @@ public class GameBoard {
     }
 
     public boolean onlyFillBoxIfPossible(){
+        boolean boxUpdated = false;
         for (int i = 0; i < isSetBox.length; i++) {
             for (int j = 0; j < isSetBox[0].length; j++) {
                 if ((isSetHEdge[i][j]) && (isSetVEdge[i][j]) && (isSetHEdge[i][j+1]) && (isSetVEdge[i+1][j])&&!isSetBox[i][j]) {
@@ -305,11 +306,11 @@ public class GameBoard {
         				score_Player2++;
         				updateScore();
         			}
-                    return true;
+                    boxUpdated = true;
                 }
             }
         }
-        return false;
+        return boxUpdated;
     }
 
 
