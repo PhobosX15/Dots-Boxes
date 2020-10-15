@@ -15,19 +15,27 @@ public class GameBoard {
     private GameStrategy currentPlayer;
     private int n;
     private int possibleBoxCount;
-    private int score_Player1;
-	private int score_Player2;
-	private JLabel scoreLabel;
 
-	private String bljh;
-	private String ksdfajkl;
+    private int comboBoxIndex;
+    private JLabel backgroundLabel;
+    private JLabel messageLabel;
+    private JLabel player1Label;
+    private JLabel player1GameStrategyLabel;
+    private JLabel player1scoreLabel;
+    private JLabel score1Label;
+    private JLabel player2Label;
+    private JLabel player2GameStrategyLabel;
+    private JLabel player2scoreLabel;
+    private JLabel score2Label;
+    private int edgeAndDotWidth2;
+    private int edgeLength2;
+    private int scorePlayer1 = 0;
+    private int scorePlayer2 = 0;
 
 
     /**
      * fields for the board generation
      */
-    private final static int edgeAndDotWidth = 8;
-    private final static int edgeLength = 40;
     private JLabel[][] hEdge, vEdge, box;
     private boolean[][] isSetHEdge, isSetVEdge, isSetBox;
 
@@ -39,27 +47,17 @@ public class GameBoard {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
             if (!mouseEnabled) return;
-
             processMove(getSourceEdge(mouseEvent.getSource()));
         }
 
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
 
-
         }
 
         @Override
         public void mouseReleased(MouseEvent mouseEvent) {
-            if(isOver()){
-                JLabel label = new JLabel(getWinner());
-                label.setFont(new Font("Arial", Font.BOLD, 25));
-                label.setText("Game is over. " + getWinner());
-                label.setBounds(380, 75, 900, 85);
-                frame.add(label);
-                frame.repaint();
 
-            }
         }
 
         @Override
@@ -95,15 +93,18 @@ public class GameBoard {
             }
         }
     };
-	
+
 
     public GameBoard(int n, JFrame frame, GameStrategy player1, GameStrategy player2) {
-        this.n = n;
+
+        this.comboBoxIndex = n;
+        this.n = getDimension();
+
         this.frame = frame;
         this.player1 = player1;
-        score_Player1 = 0;
         this.player2 = player2;
-        score_Player2 = 0;
+        player1.setScore(scorePlayer1);
+        player2.setScore(scorePlayer2);
         currentPlayer = this.player1;
         this.possibleBoxCount = (n - 1) * (n - 1);
         initializeUIGameBoard();
@@ -111,37 +112,129 @@ public class GameBoard {
 
     public void initializeUIGameBoard() {
 
+        backgroundLabel = new JLabel();
+        messageLabel = new JLabel();
+        player1Label = new JLabel();
+        player1GameStrategyLabel = new JLabel();
+        player1scoreLabel = new JLabel();
+        score1Label = new JLabel();
+        player2Label = new JLabel();
+        player2GameStrategyLabel = new JLabel();
+        player2scoreLabel = new JLabel();
+        score2Label = new JLabel();
+
         frame.getContentPane().removeAll();
         frame.revalidate();
         frame.repaint();
 
-
-        frame.setContentPane(newBackgroundImagePanel());
-        frame.add(setUpNewBoard());
+        frame.getContentPane().setLayout(null);
+        frame.getContentPane().add(newBackToMenuButton());
+        frame.getContentPane().add(drawNewBoard());
         
-        frame.add(initScoreLabel());
+        messageLabel.setFont(new java.awt.Font("Arial", 0, 20));
+        if(currentPlayer.isPlayer1)
+        {
+            messageLabel.setForeground(player1.color);
+            messageLabel.setText("Player 1's turn.");
+        }
+        else
+        {
+            messageLabel.setForeground(player2.color);
+            messageLabel.setText("Player 2's turn.");
+        }
+        frame.getContentPane().add(messageLabel);
+        messageLabel.setBounds(820, 210, 275, 24);
 
-        frame.add(newBackToMenuButton());
+        player1Label.setFont(new java.awt.Font("Arial", 0, 20));
+        player1Label.setForeground(player1.color);
+        player1Label.setText("Player 1:");
+        frame.getContentPane().add(player1Label);
+        player1Label.setBounds(820, 30, 89, 24);
+
+        player2Label.setFont(new java.awt.Font("Arial", 0, 20));
+        player2Label.setForeground(player2.color);
+        player2Label.setText("Player 2:");
+        frame.getContentPane().add(player2Label);
+        player2Label.setBounds(1030, 30, 89, 24);
+
+        player1GameStrategyLabel.setFont(new java.awt.Font("Arial", 0, 20));
+        if(player1.title.equals("Human"))
+        {
+            player1GameStrategyLabel.setText("Human");
+        }
+        else
+        {
+            player1GameStrategyLabel.setText("AI");
+        }
+        frame.getContentPane().add(player1GameStrategyLabel);
+        player1GameStrategyLabel.setBounds(820, 70, 89, 24);
+
+        player2GameStrategyLabel.setFont(new java.awt.Font("Arial", 0, 20));
+        if(player2.title.equals("Human"))
+        {
+            player2GameStrategyLabel.setText("Human");
+        }
+        else
+        {
+            player2GameStrategyLabel.setText("AI");
+        }
+        frame.getContentPane().add(player2GameStrategyLabel);
+        player2GameStrategyLabel.setBounds(1030, 70, 89, 24);
+
+        score1Label.setFont(new java.awt.Font("Arial", 0, 20));
+        score1Label.setText("Score:");
+        frame.getContentPane().add(score1Label);
+        score1Label.setBounds(820, 110, 89, 24);
+
+        score2Label.setFont(new java.awt.Font("Arial", 0, 20));
+        score2Label.setText("Score:");
+        frame.getContentPane().add(score2Label);
+        score2Label.setBounds(1030, 110, 89, 24);
+
+        player2scoreLabel.setFont(new java.awt.Font("Arial", 0, 20));
+        player2scoreLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        player2scoreLabel.setText("0");
+        frame.getContentPane().add(player2scoreLabel);
+        player2scoreLabel.setBounds(1030, 150, 89, 24);
+
+        player1scoreLabel.setFont(new java.awt.Font("Arial", 0, 20));
+        player1scoreLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        player1scoreLabel.setText("0");
+        frame.getContentPane().add(player1scoreLabel);
+        player1scoreLabel.setBounds(820, 150, 89, 24);
+
+        ImageIcon background = new ImageIcon(UIMainIntro.class.getResource("../images/dotsnboxes.jpg"));
+        Image backG = background.getImage();
+        Image newBackG = backG.getScaledInstance(1170, 720, java.awt.Image.SCALE_SMOOTH);
+        ImageIcon newBackGround = new ImageIcon(newBackG);
+        backgroundLabel.setPreferredSize(new java.awt.Dimension(1170, 720));
+        backgroundLabel.setIcon(newBackGround);
+        frame.getContentPane().add(backgroundLabel);
+        backgroundLabel.setBounds(0, 0, 1170, 720);
+        backgroundLabel.setOpaque(true);
+
         frame.getContentPane().validate();
         frame.setVisible(true);
-        //manageGame();
+
+        // manageGame(); --- a voir //
     }
-    
-	private JLabel initScoreLabel() {
-		scoreLabel = new JLabel("<html><p style=\"font-size:25px\">Score: </p>"
-				+ "<p style=\"color:#00FFFF\">Player 1: " + score_Player1 + "<br/></p>"
-				+ "<p style=\"color:green\">Player 2: " + score_Player2 + "<br/></p>" + "</html>",
-				SwingConstants.CENTER);
-		scoreLabel.setBounds(0, 0, 100, 100);
-		return scoreLabel;
-	}
-	
-	private void updateScore() {
-		frame.remove(scoreLabel);
-		frame.add(initScoreLabel());
-		frame.revalidate();
-		frame.repaint();
-	}
+
+    public void updateLabels()
+    {
+        player1scoreLabel.setText(Integer.toString(player1.getScore()));
+        player2scoreLabel.setText(Integer.toString(player2.getScore()));
+
+        if(currentPlayer.isPlayer1)
+        {
+            messageLabel.setForeground(player1.color);
+            messageLabel.setText("Player 1's turn.");
+        }
+        else
+        {
+            messageLabel.setForeground(player2.color);
+            messageLabel.setText("Player 2's turn.");
+        }
+    }
 
     public void manageGame() {
         while (possibleBoxCount > 0) {
@@ -161,7 +254,7 @@ public class GameBoard {
 
     private JLabel newHorizontalEdge() {
         JLabel label = new JLabel();
-        label.setPreferredSize(new Dimension(edgeLength, edgeAndDotWidth));
+        label.setPreferredSize(new Dimension(edgeLength2, edgeAndDotWidth2));
         label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         label.setOpaque(true);
         label.addMouseListener(mouseListener);
@@ -170,32 +263,42 @@ public class GameBoard {
 
     private JLabel newVerticalEdge() {
         JLabel label = new JLabel();
-        label.setPreferredSize(new Dimension(edgeAndDotWidth, edgeLength));
+        label.setPreferredSize(new Dimension(edgeAndDotWidth2, edgeLength2));
         label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         label.setOpaque(true);
         label.addMouseListener(mouseListener);
         return label;
     }
 
-    private JLabel newDot() {
-        JLabel label = new JLabel();
-        label.setPreferredSize(new Dimension(edgeAndDotWidth, edgeAndDotWidth));
-        label.setBackground(Color.BLACK);
-        label.setOpaque(true);
-        return label;
+    private JLabel drawDots()
+    {
+        JLabel dot = new JLabel();
+        ImageIcon ico = new ImageIcon(UIMainIntro.class.getResource("../images/dotBlack.png"));
+        Image image = ico.getImage(); 
+        Image newimg = image.getScaledInstance(edgeAndDotWidth2, edgeAndDotWidth2,  java.awt.Image.SCALE_SMOOTH); 
+        ImageIcon newIcon = new ImageIcon(newimg);
+        dot.setPreferredSize(new Dimension(edgeAndDotWidth2, edgeAndDotWidth2));
+        dot.setIcon(newIcon);
+        dot.setOpaque(true);
+        return dot;
     }
 
     private JLabel newBox() {
         JLabel label = new JLabel();
-        label.setPreferredSize(new Dimension(edgeLength, edgeLength));
+        label.setPreferredSize(new Dimension(edgeLength2, edgeLength2));
         label.setOpaque(true);
         return label;
     }
 
-    private JPanel setUpNewBoard() {
+    private JPanel drawNewBoard()
+    {
         JPanel grid = new JPanel(new GridBagLayout());
-        int sizeOfGridSide = (n * edgeAndDotWidth) + ((n - 1) * edgeLength);
-        grid.setBounds((UIMainIntro.SCREEN_WIDTH / 2) - (sizeOfGridSide / 2), UIMainIntro.SCREEN_HEIGHT / 2 - sizeOfGridSide / 2, sizeOfGridSide, sizeOfGridSide);
+        grid.setOpaque(false);
+        grid.setBackground(Color.WHITE);
+        edgeLength2 = 720/(n+2);
+        edgeAndDotWidth2 = edgeLength2/10;
+        grid.setBounds(70, 0, 720, 720);
+
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -212,11 +315,11 @@ public class GameBoard {
         for (int i = 0; i < ((2 * n) - 1); i++) {
             JPanel pane = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
             if (i % 2 == 0) {
-                pane.add(newDot());
+                pane.add(drawDots());
                 for (int j = 0; j < (n - 1); j++) {
                     hEdge[j][i / 2] = newHorizontalEdge();
                     pane.add(hEdge[j][i / 2]);
-                    pane.add(newDot());
+                    pane.add(drawDots());
                 }
             } else {
                 for (int j = 0; j < (n - 1); j++) {
@@ -232,20 +335,6 @@ public class GameBoard {
             grid.add(pane, constraints);
         }
         return grid;
-    }
-
-    private JPanel newBackgroundImagePanel() {
-        JPanel panel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-
-                super.paintComponent(g);
-                ImageIcon img = new ImageIcon("C:/CODE101/project2.1/DotsAndBoxes/src/images/dotsnboxes.jpg", "blah");
-                g.drawImage(img.getImage(), 0, 0, UIMainIntro.SCREEN_WIDTH, UIMainIntro.SCREEN_HEIGHT, this);
-            }
-        };
-        panel.setLayout(null);
-        return panel;
     }
 
     private JButton newBackToMenuButton() {
@@ -283,6 +372,13 @@ public class GameBoard {
         return new Edge();
     }
 
+    public boolean isFilled(Edge edge) {
+        if (edge.isHorizontal()) {
+            return isSetHEdge[edge.getX()][edge.getY()];
+        }
+        return isSetVEdge[edge.getX()][edge.getY()];
+    }
+
     /**
      * fills a an edge if possible
      *
@@ -312,13 +408,8 @@ public class GameBoard {
                     isSetBox[i][j]=true;
                     box[i][j].setBackground(currentPlayer.color);
                     possibleBoxCount--;
-                    if (currentPlayer.isPlayer1) {
-        				score_Player1++;
-        				updateScore();
-        			} else {
-        				score_Player2++;
-        				updateScore();
-        			}
+                    currentPlayer.setScore(currentPlayer.getScore() + 1);
+                    updateLabels();
                     boxUpdated = true;
                 }
             }
@@ -326,14 +417,28 @@ public class GameBoard {
         return boxUpdated;
     }
 
-    public boolean isOver(){
-        if(possibleBoxCount == 0){
-
-        return true;
+    /**
+     * checks if a box is complete by comparing the filled edges around it
+     *
+     * @param x,y location of box
+     * @return true if a box is detected as set
+     */
+    public boolean isBoxComplete(int x, int y) {
+        if (isSetBox[x][y]) {
+            return true;
+        }
+        if ((isSetHEdge[x][y]) && (isSetVEdge[x][y]) && (isSetHEdge[x][y+1]) && (isSetVEdge[x+1][y])) {
+            isSetBox[x][y]=true;
+            box[x][y].setBackground(currentPlayer.color);
+            currentPlayer.setScore(currentPlayer.getScore() + 1);
+            possibleBoxCount--;
+            updateLabels();
+            return true;
         }
         return false;
-    }
 
+
+    }
 
     public void switchPlayers() {
         if (currentPlayer.isPlayer1) {
@@ -351,12 +456,18 @@ public class GameBoard {
                 mouseEnabled = false;
             }
         }
+        updateLabels();
     }
 
+    public int getPossibleBoxCount() {
+        return this.possibleBoxCount;
+    }
 
     private boolean processMove(Edge location) {
+
         if (fillEdge(location)) {
-            if(!onlyFillBoxIfPossible()) {
+            if(!onlyFillBoxIfPossible())
+            {
                 switchPlayers();
             }
             return true;
@@ -365,14 +476,29 @@ public class GameBoard {
         }
     }
 
-    public String getWinner(){
-        if(score_Player1 > score_Player2){
-            return "Player 1 Wins!";
+    public int getDimension()
+    {
+        int res = -1;
+        if(comboBoxIndex == 0)
+        {
+            res = 3;
         }
-        else if(score_Player2 > score_Player1){
-            return "Player 2 Wins!";
+        else if(comboBoxIndex == 1)
+        {
+            res = 4;
         }
-        return "It's a Tie!" ;
+        else if(comboBoxIndex == 2)
+        {
+            res = 5;
+        }
+        else if(comboBoxIndex == 3)
+        {
+            res = 7;
+        }
+        else
+        {
+            res = 8;
+        }
+        return res;
     }
 }
-
