@@ -10,11 +10,6 @@ public class UIMainIntro {
     public static final int SCREEN_WIDTH = 1170;
     public static final int SCREEN_HEIGHT = 720;
 
-    private ImageIcon exitButtonEnteredImage = new ImageIcon(UIMainIntro.class.getResource("../images/exitButtonEntered.png"));
-    private ImageIcon exitButtonBasicImage = new ImageIcon(UIMainIntro.class.getResource("../images/exitButtonBasic.png"));
-    private JButton exitButton = new JButton(exitButtonBasicImage);
-
-
     public static void main(String[] args) {
         new UIMainIntro();
     }
@@ -26,7 +21,7 @@ public class UIMainIntro {
         frame.setContentPane(panel);
         frame.add(start);
 
-        //Then final step
+        frame.setResizable(false);
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
