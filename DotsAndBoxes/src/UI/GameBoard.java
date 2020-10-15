@@ -54,7 +54,6 @@ public class GameBoard {
                 label.setText("Game is over. " + getWinner());
                 label.setBounds(380, 75, 900, 85);
                 frame.add(label);
-                System.out.println("game is over");
                 frame.repaint();
 
             }
@@ -310,7 +309,6 @@ public class GameBoard {
                     isSetBox[i][j]=true;
                     box[i][j].setBackground(currentPlayer.color);
                     possibleBoxCount--;
-                    System.out.println(possibleBoxCount);
                     if (currentPlayer.isPlayer1) {
         				score_Player1++;
         				updateScore();
