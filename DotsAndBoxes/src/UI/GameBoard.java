@@ -19,6 +19,8 @@ public class GameBoard {
 	private int score_Player2;
 	private JLabel scoreLabel;
 
+	private String bljh;
+
 
     /**
      * fields for the board generation
