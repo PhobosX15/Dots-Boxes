@@ -37,5 +37,11 @@ public abstract class GameStrategy {
         return isPlayer1 == that.isPlayer1 &&
                 title.equals(that.title);
     }
+    public void setScore(int i){
+        this.score = i;
+    }
+    public int getScore(){
+        return score;
+    }
 
 }

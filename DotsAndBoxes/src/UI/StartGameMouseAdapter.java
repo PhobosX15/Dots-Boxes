@@ -32,10 +32,10 @@ public class StartGameMouseAdapter extends MouseAdapter {
             //todo when selection is not made
         } else {
             try {
-                menu.length = Integer.parseInt(menu.textField.getText());
-                menu.gameBoard = new GameBoard(menu.length, menu.frame, menu.player1, menu.player2);
+                menu.comboBoxIndex = menu.gridSizeComboBox.getSelectedIndex();
+                menu.gameBoard = new GameBoard(menu.comboBoxIndex, menu.frame, menu.player1, menu.player2);
             } catch (NumberFormatException hsdkf) {
-                menu.warningGameLabel();
+                //menu.warningGameLabel();
             }
         }
     }
