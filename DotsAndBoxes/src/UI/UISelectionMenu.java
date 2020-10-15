@@ -15,6 +15,9 @@ public class UISelectionMenu {
     public static ArrayList<JButton> selectStrategyButtons = new ArrayList<>();
     JTextField textField;
 
+    javax.swing.JComboBox<String> gridSizeComboBox;
+    int comboBoxIndex = -1;
+
 
     /**
      * The following variables are the selection variables
@@ -40,10 +43,20 @@ public class UISelectionMenu {
         //Add what we need to this menu here
         JPanel backgroundImagePanel = getBackgroundImagePanel();
         JButton startGameButton = getStartGameButton();
-        textField = getTextField();
+
+        gridSizeComboBox = new javax.swing.JComboBox<>();
+        gridSizeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3 x 3", "4 x 4", "5 x 5", "7 x 7", "8 x 8" }));
+        Font BoxFont = new Font("Arial", Font.PLAIN, 20);
+        gridSizeComboBox.setFont(BoxFont);
+        gridSizeComboBox.setBackground(Color.white);
+        gridSizeComboBox.setForeground(Color.gray.brighter());
+        gridSizeComboBox.setBounds(400, 30, 400, 30);
+
         frame.setContentPane(backgroundImagePanel);
         frame.add(startGameButton);
-        frame.add(textField);
+
+        frame.add(gridSizeComboBox);
+
         frame.add(gameLabel);
         JButton[] buttons = getSelectorButtons();
         for (int i = 0; i < buttons.length; i++) {
@@ -65,62 +78,6 @@ public class UISelectionMenu {
     private void updateGameLabel() {
         gameLabel.setText(player1.title + " Vs " + player2.title);
         gameLabel.updateUI();
-    }
-
-    public void warningGameLabel() {
-        gameLabel.setText("Enter Valid Board Size");
-        gameLabel.updateUI();
-    }
-
-    private JTextField getTextField() {
-        JTextField textField = new JTextField("Board Size: Natural Number");
-        Font fieldFont = new Font("Arial", Font.PLAIN, 20);
-        textField.setFont(fieldFont);
-        textField.setBackground(Color.white);
-        textField.setForeground(Color.gray.brighter());
-        textField.setColumns(30);
-        textField.setBounds(400, 30, 400, 30);
-        textField.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                String number = textField.getText();
-                length = Integer.parseInt(textField.getText());
-
-            }
-        });
-        textField.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                // TODO Auto-generated method stub
-                textField.setText("");
-                textField.setForeground(Color.black);
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-        return textField;
     }
 
     private JButton[] getSelectorButtons() {
