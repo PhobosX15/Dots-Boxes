@@ -36,17 +36,28 @@ public class GameBoard {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
             if (!mouseEnabled) return;
+
             processMove(getSourceEdge(mouseEvent.getSource()));
         }
 
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
 
+
         }
 
         @Override
         public void mouseReleased(MouseEvent mouseEvent) {
+            if(isOver()){
+                JLabel label = new JLabel(getWinner());
+                label.setFont(new Font("Arial", Font.BOLD, 25));
+                label.setText("Game is over. " + getWinner());
+                label.setBounds(380, 75, 900, 85);
+                frame.add(label);
+                System.out.println("game is over");
+                frame.repaint();
 
+            }
         }
 
         @Override
@@ -299,6 +310,7 @@ public class GameBoard {
                     isSetBox[i][j]=true;
                     box[i][j].setBackground(currentPlayer.color);
                     possibleBoxCount--;
+                    System.out.println(possibleBoxCount);
                     if (currentPlayer.isPlayer1) {
         				score_Player1++;
         				updateScore();
@@ -311,6 +323,14 @@ public class GameBoard {
             }
         }
         return boxUpdated;
+    }
+
+    public boolean isOver(){
+        if(possibleBoxCount == 0){
+
+        return true;
+        }
+        return false;
     }
 
 
@@ -334,7 +354,6 @@ public class GameBoard {
 
 
     private boolean processMove(Edge location) {
-
         if (fillEdge(location)) {
             if(!onlyFillBoxIfPossible()) {
                 switchPlayers();
@@ -344,4 +363,15 @@ public class GameBoard {
             return false;
         }
     }
+
+    public String getWinner(){
+        if(score_Player1 > score_Player2){
+            return "Player 1 Wins!";
+        }
+        else if(score_Player2 > score_Player1){
+            return "Player 2 Wins!";
+        }
+        return "It's a Tie!" ;
+    }
 }
+
