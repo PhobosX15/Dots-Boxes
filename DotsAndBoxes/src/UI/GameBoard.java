@@ -20,6 +20,7 @@ public class GameBoard {
 	private JLabel scoreLabel;
 
 	private String bljh;
+	private String ksdfajkl;
 
 
     /**
