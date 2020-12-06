@@ -102,17 +102,6 @@ public class DummyBoard {
         this.player1=realboard.player1;
         this.player2=realboard.player2;
 
-//	        clonedBoard.currentPlayer=currentPlayer;
-//	        clonedBoard.backgroundLabel=backgroundLabel;
-//	        clonedBoard.ai1=ai1;
-//	        clonedBoard.ai2=ai2;
-//	        clonedBoard.player1=player1;
-//	        clonedBoard.player2=player2;
-//	        clonedBoard.player1scoreLabel=player1scoreLabel;
-//	        clonedBoard.player2scoreLabel=player2scoreLabel;
-//	        clonedBoard.messageLabel=messageLabel;
-
-
 
     }
 
@@ -284,54 +273,10 @@ public class DummyBoard {
 
     public DummyBoard updateBoard(Edge edge) {
         DummyBoard updatedBoard=null;
-//	        DummyBoard updatedBoard = copyGameBoard();
-//	        updatedBoard.
-//	        updatedBoard.processMove(edge);
-
-
         return updatedBoard;
 
     }
 
-//	    public DummyBoard copyGameBoard() {
-//	    	DummyBoard clonedBoard = new DummyBoard(n);
-//
-//	        for (int i = 0; i < hEdge.length; i++) {
-//	            for (int j = 0; j < hEdge[0].length; j++) {
-//	                clonedBoard.hEdge[i][j] = hEdge[i][j];
-//	                clonedBoard.isSetHEdge[i][j] = isSetHEdge[i][j];
-//	            }
-//	        }
-//
-//	        for (int i = 0; i < vEdge.length; i++) {
-//	            for (int j = 0; j < vEdge[0].length; j++) {
-//	                clonedBoard.vEdge[i][j] = vEdge[i][j];
-//	                clonedBoard.isSetVEdge[i][j] = isSetVEdge[i][j];
-//	            }
-//	        }
-//
-//	        for (int i = 0; i < box.length; i++) {
-//	            for (int j = 0; j < box[0].length; j++) {
-//	                clonedBoard.box[i][j] = box[i][j];
-//	                clonedBoard.isSetBox[i][j] = isSetBox[i][j];
-//	            }
-//	        }
-//
-//	        clonedBoard.scorePlayer1 = scorePlayer1;
-//	        clonedBoard.scorePlayer2 = scorePlayer2;
-//	        clonedBoard.currentPlayer=currentPlayer;
-//	        clonedBoard.backgroundLabel=backgroundLabel;
-//	        clonedBoard.ai1=ai1;
-//	        clonedBoard.ai2=ai2;
-//	        clonedBoard.player1=player1;
-//	        clonedBoard.player2=player2;
-//	        clonedBoard.player1scoreLabel=player1scoreLabel;
-//	        clonedBoard.player2scoreLabel=player2scoreLabel;
-//	        clonedBoard.messageLabel=messageLabel;
-//
-//
-//	        return clonedBoard;
-//	    }
 
     public GameStrategy getCurrentPlayer(){
         return this.currentPlayer;

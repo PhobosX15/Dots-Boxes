@@ -327,17 +327,13 @@ public class GameBoard {
     public void manageGame() {
         while (possibleBoxCount > 0) {
             if (!ai1 && !ai2) {
-                /*try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }*/
+
             } else {
                 processMove(move);
             }
 
         }
-        //  new UISelectionMenu(frame).initializeSelectionMenu();
+
     }
 
     private JLabel newHorizontalEdge() {
@@ -550,14 +546,6 @@ public class GameBoard {
 
         return boardstate.processMove(location);
 
-//        if (fillEdge(location)) {
-//            if (!onlyFillBoxIfPossible()) {
-//                switchPlayers();
-//            }
-//            return true;
-//        } else {
-//            return false;
-//        }
     }
 
 
@@ -565,25 +553,7 @@ public class GameBoard {
      * @return available moves
      */
     public ArrayList<Edge> getMoves() {
-        /*ArrayList<Edge> moves = new ArrayList<Edge>();
 
-        for (int i = 0; i < isSetHEdge.length; i++) {
-            for (int j = 0; j < isSetHEdge[0].length; j++) {
-                if (isSetHEdge[i][j] == false) {
-                    moves.add(new Edge(i, j, true));
-                }
-            }
-        }
-
-        for (int i = 0; i < isSetVEdge.length; i++) {
-            for (int j = 0; j < isSetVEdge[0].length; j++) {
-                if (isSetVEdge[i][j] == false) {
-                    moves.add(new Edge(i, j, false));
-                }
-            }
-        }
-
-        return moves;*/
         ArrayList<Edge> moves = new ArrayList<Edge>();
         for(int i = 0; i < (n-1); i++)
         {
@@ -625,104 +595,6 @@ public class GameBoard {
         return res;
     }
 
-    public int chain() {
-        return 0;
-    }
-
-//    public GameBoard copyGameBoard() {
-//        GameBoard clonedBoard = new GameBoard(n);
-//
-//        for (int i = 0; i < hEdge.length; i++) {
-//            for (int j = 0; j < hEdge[0].length; j++) {
-//                clonedBoard.hEdge[i][j] = hEdge[i][j];
-//                clonedBoard.isSetHEdge[i][j] = boardstate.isSetHEdge[i][j];
-//            }
-//        }
-//
-//        for (int i = 0; i < vEdge.length; i++) {
-//            for (int j = 0; j < vEdge[0].length; j++) {
-//                clonedBoard.vEdge[i][j] = vEdge[i][j];
-//                clonedBoard.isSetVEdge[i][j] = isSetVEdge[i][j];
-//            }
-//        }
-//
-//        for (int i = 0; i < box.length; i++) {
-//            for (int j = 0; j < box[0].length; j++) {
-//                clonedBoard.box[i][j] = box[i][j];
-//                clonedBoard.isSetBox[i][j] = isSetBox[i][j];
-//            }
-//        }
-//
-//        clonedBoard.scorePlayer1 = scorePlayer1;
-//        clonedBoard.scorePlayer2 = scorePlayer2;
-//        clonedBoard.currentPlayer=currentPlayer;
-//        clonedBoard.backgroundLabel=backgroundLabel;
-//        clonedBoard.ai1=ai1;
-//        clonedBoard.ai2=ai2;
-//        clonedBoard.player1=player1;
-//        clonedBoard.player2=player2;
-//        clonedBoard.player1scoreLabel=player1scoreLabel;
-//        clonedBoard.player2scoreLabel=player2scoreLabel;
-//        clonedBoard.messageLabel=messageLabel;
-//
-//
-//        return clonedBoard;
-//    }
-
-
-//    public GameBoard updateBoard(Edge edge) {
-//
-//        GameBoard updatedBoard = copyGameBoard();
-//        updatedBoard.processMove(edge);
-//
-//
-//        return updatedBoard;
-//
-//    }
-
-    /**
-     * count the filled edges of a box on a specific coordinate
-     *
-     * @param x
-     * @param y
-     * @return the number of edges filled
-    //     */
-//    private int countEdges(int x, int y) {
-//        int numberEdges = 0;
-//        if (isSetHEdge[x][y]) {
-//            numberEdges++;
-//        }
-//        if (isSetHEdge[x][y + 1]) {
-//            numberEdges++;
-//        }
-//        if (isSetVEdge[x][y]) {
-//            numberEdges++;
-//        }
-//        if (isSetVEdge[x + 1][y]) {
-//            numberEdges++;
-//        }
-//        return numberEdges;
-//    }
-//
-//    public int getNumberOfBoxes(int missingLine) {
-//        int numBox = 0;
-//        for (int i = 0; i < isSetBox.length; i++) {
-//            for (int j = 0; j < isSetBox[0].length; j++) {
-//                if (getMissingLines(i, j) == missingLine) {
-//                    numBox++;
-//                }
-//            }
-//        }
-//        return numBox;
-//    }
-//
-//    public int getMissingLines(int x, int y) {
-//        int missingLines = 0;
-//        missingLines = 4 - countEdges(x, y);
-//
-//        return missingLines;
-//    }
-
 
     public int getScore(boolean isPlayer1) {
         if (isPlayer1) {
@@ -731,38 +603,7 @@ public class GameBoard {
         return player2.getScore();
     }
 
-    /**
-     * computes a child of a board state
-     * @param edge
-     * @return child
-     */
-//    public GameBoard computeAChild(Edge edge) {
-//
-//        GameBoard child = this.copyGameBoard();
-//        child.updateBoard(edge);
-//
-//        return child;
-//    }
 
-    /**
-     * computes the children of a cuurent board state
-     */
-//    public void computeChildren(){
-//        ArrayList<GameBoard> output = new ArrayList<>();
-//
-//        for(Edge edge : this.getMoves()){
-//            GameBoard child = computeAChild(edge);
-//            output.add(child);
-//        }
-//        this.children = output;
-//    }
-
-//    public ArrayList<GameBoard> getChildren(){
-//        if(this.children == null){
-//            computeChildren();
-//        }
-//        return this.children;
-//    }
 
     /**
      * finds the neew added edge if there is any between parent and child state
