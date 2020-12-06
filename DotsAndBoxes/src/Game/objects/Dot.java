@@ -1,4 +1,4 @@
-
+package Game.objects;
 
 /**
  * class that represent a dot component of the game, represented as a vertex of a graph

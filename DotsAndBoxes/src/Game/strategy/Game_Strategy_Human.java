@@ -1,6 +1,5 @@
 package Game.strategy;
 
-import UI.DummyBoard;
 import UI.Edge;
 import UI.GameBoard;
 
@@ -21,7 +20,7 @@ public class Game_Strategy_Human extends GameStrategy {
      * @return Line selected from two dots by user
      */
     @Override
-    public Edge makeMove(DummyBoard gameBoard) {
+    public Edge makeMove(GameBoard gameBoard) {
 
         return null;
     }

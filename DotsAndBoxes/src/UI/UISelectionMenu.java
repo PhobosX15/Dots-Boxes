@@ -1,6 +1,9 @@
 package UI;
 
-import Game.strategy.*;
+import Game.strategy.GameStrategy;
+import Game.strategy.Game_Strategy_AI_1_example;
+import Game.strategy.Game_Strategy_AI_2_example;
+import Game.strategy.Game_Strategy_Human;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +24,7 @@ public class UISelectionMenu {
      */
     int length = 10;// -1;
     GameStrategy player1 = new Game_Strategy_Human(true, Color.CYAN);
-    GameStrategy player2 = new Game_Strategy_Human(false, Color.GREEN); /// neeeds to be fixed
+    GameStrategy player2 = new Game_Strategy_Human(false, Color.GREEN);
     JLabel gameLabel = getGameLabel();
     GameBoard gameBoard;
     public boolean isNotGamePlay = true;
@@ -94,7 +97,7 @@ public class UISelectionMenu {
         bp1Ai1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player1 = new MinimaxAI(true, Color.CYAN);
+                player1 = new Game_Strategy_AI_1_example(true, Color.CYAN);
                 updateGameLabel();
             }
         });
@@ -103,7 +106,7 @@ public class UISelectionMenu {
         bp1Ai2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player1 = new GreedyAI(true, Color.CYAN);
+                player1 = new Game_Strategy_AI_2_example(true, Color.CYAN);
                 updateGameLabel();
             }
         });
@@ -122,7 +125,7 @@ public class UISelectionMenu {
         bp2Ai1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player2 = new MinimaxAI(false, Color.GREEN);
+                player2 = new Game_Strategy_AI_1_example(false, Color.GREEN);
                 updateGameLabel();
             }
         });
@@ -131,7 +134,7 @@ public class UISelectionMenu {
         bp2Ai2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player2 = new GreedyAI(false, Color.GREEN);
+                player2 = new Game_Strategy_AI_2_example(false, Color.GREEN);
                 updateGameLabel();
             }
         });

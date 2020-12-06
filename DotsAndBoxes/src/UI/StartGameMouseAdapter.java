@@ -34,8 +34,6 @@ public class StartGameMouseAdapter extends MouseAdapter {
             try {
                 menu.comboBoxIndex = menu.gridSizeComboBox.getSelectedIndex();
                 menu.gameBoard = new GameBoard(menu.comboBoxIndex, menu.frame, menu.player1, menu.player2);
-                System.out.println(menu.player1.title);
-                System.out.println(menu.player2.title);
             } catch (NumberFormatException hsdkf) {
                 //menu.warningGameLabel();
             }
