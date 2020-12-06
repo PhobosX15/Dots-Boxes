@@ -1,62 +1,48 @@
 /*
-package Game.objects;
+public class Box{
 
-import Game.strategy.Player;
-
-*/
-/**
- * this class represents the box object in the game
- *//*
-
-public class Box {
-
-    private Line left;
-    private Line right;
-    private Line top;
-    private Line bottom;
-    private Player owner;
-    private Line[] lines ;
+    public static boolean[][] isSetBox;
+    private int x;
+    private int y;
 
 
-    public Box(Line left, Line right, Line top, Line bottom){
-        this.left= left;
-        this.right = right;
-        this.top = top;
-        this.bottom =bottom;
-        this.owner = owner;
+    public Box(x,y){
 
-        lines = new Line[]{this.left,this.right,this.top,this.bottom};
     }
 
+    public static class Edge {
 
-    public boolean isComplete() {
+        private int x, y;
+        private boolean horizontal;
 
-        for (int i = 0; i < lines.length; i++) {
-            if (lines[i].isOccupied()) {
-                return true;
-            }
+        public Edge() {
+            x = y = -1;
+            horizontal = false;
         }
-        return false;
+
+        public Edge(int x, int y, boolean horizontal) {
+            this.x = x;
+            this.y = y;
+            this.horizontal = horizontal;
+        }
+
+        public boolean isHorizontal() {
+            return horizontal;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+
+        @Override
+        public String toString() {
+            return ((horizontal ? "H " : "V ") + x + " " + y);
+        }
+
     }
-
-
-    public Line[] getEdges(){
-        return this.lines;
-    }
-
-    public void setOwner(Player owner){ this.owner = owner; }
-
-    public Player getOwner(){ return  this.owner; }
-
-
-    @Override
-    public String toString() {
-        return "Box{" +
-                "left =" + left +
-                ", right =" + right +
-                ", top =" + top +
-                ", bottom=" + bottom +
-                '}';
-    }
-}
-*/
+}*/

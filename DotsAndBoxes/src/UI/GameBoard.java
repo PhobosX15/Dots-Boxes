@@ -7,11 +7,14 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameBoard {
+	public DummyBoard boardstate;
     public JFrame frame;
-    private GameStrategy player1;
-    private GameStrategy player2;
+    public GameStrategy player1;
+    public GameStrategy player2;
     private GameStrategy currentPlayer;
     private int n;
     private int possibleBoxCount;
@@ -29,15 +32,20 @@ public class GameBoard {
     private JLabel score2Label;
     private int edgeAndDotWidth2;
     private int edgeLength2;
-    private int scorePlayer1 = 0;
-    private int scorePlayer2 = 0;
+    public int scorePlayer1 = 0;
+    public int scorePlayer2 = 0;
+    private boolean ai1, ai2 = true;
 
+
+    private GameBoard currentBoard;
+    private ArrayList<GameBoard> children;
+    Edge move;
 
     /**
      * fields for the board generation
      */
     private JLabel[][] hEdge, vEdge, box;
-    private boolean[][] isSetHEdge, isSetVEdge, isSetBox;
+
 
     public static boolean mouseEnabled = true;
     /**
@@ -47,7 +55,20 @@ public class GameBoard {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
             if (!mouseEnabled) return;
-            processMove(getSourceEdge(mouseEvent.getSource()));
+           //processMove(getSourceEdge(mouseEvent.getSource()));
+           boardstate.processPlayerMove(getSourceEdge(mouseEvent.getSource()));
+           updateLabels();
+           
+           
+           while (boardstate.move!=null && boardstate.getMoves().size()>0) {
+        	   boardstate.processAIMove(boardstate.move);
+           }
+           
+           updateLabels();
+           
+          
+          
+         
         }
 
         @Override
@@ -67,13 +88,13 @@ public class GameBoard {
             int x = location.getX(), y = location.getY();
             if (location.isHorizontal()) {
 
-                if (isSetHEdge[x][y]) return;
+                if (boardstate.isSetHEdge[x][y]) return;
                 hEdge[x][y].setCursor(new Cursor(Cursor.HAND_CURSOR));
-                hEdge[x][y].setBackground(currentPlayer.color);
+                hEdge[x][y].setBackground(boardstate.currentPlayer.color);
             } else {
-                if (isSetVEdge[x][y]) return;
+                if (boardstate.isSetVEdge[x][y]) return;
                 vEdge[x][y].setCursor(new Cursor(Cursor.HAND_CURSOR));
-                vEdge[x][y].setBackground(currentPlayer.color);
+                vEdge[x][y].setBackground(boardstate.currentPlayer.color);
             }
         }
 
@@ -83,11 +104,11 @@ public class GameBoard {
             Edge location = getSourceEdge(mouseEvent.getSource());
             int x = location.getX(), y = location.getY();
             if (location.isHorizontal()) {
-                if (isSetHEdge[x][y]) return;
+                if (boardstate.isSetHEdge[x][y]) return;
                 hEdge[x][y].setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 hEdge[x][y].setBackground(Color.WHITE);
             } else {
-                if (isSetVEdge[x][y]) return;
+                if (boardstate.isSetVEdge[x][y]) return;
                 vEdge[x][y].setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 vEdge[x][y].setBackground(Color.WHITE);
             }
@@ -96,18 +117,58 @@ public class GameBoard {
 
 
     public GameBoard(int n, JFrame frame, GameStrategy player1, GameStrategy player2) {
-
-        this.comboBoxIndex = n;
-        this.n = getDimension();
-
+    	boardstate=new DummyBoard(getDimension(n));
+    	boardstate.comboBoxIndex = n;
+        boardstate.n = getDimension(n);
+        this.comboBoxIndex=n;
+        this.n=boardstate.n ;
+             
         this.frame = frame;
-        this.player1 = player1;
-        this.player2 = player2;
-        player1.setScore(scorePlayer1);
-        player2.setScore(scorePlayer2);
-        currentPlayer = this.player1;
-        this.possibleBoxCount = (n - 1) * (n - 1);
+        boardstate.player1 = player1;
+        boardstate.player2 = player2;
+        this.player1=player1;
+        this.player2=player2;
+        this.currentPlayer=player1;
+        boardstate.player1.setScore(scorePlayer1);
+        boardstate.player2.setScore(scorePlayer2);
+        boardstate.currentPlayer = boardstate.player1;
+        this.possibleBoxCount = (this.n - 1) * (this.n - 1);
+        if(!player1.title.equals("Human")){
+            mouseEnabled = false;
+            boardstate.player1.makeMove(boardstate);
+        }
         initializeUIGameBoard();
+
+
+
+    }
+
+    public void GameBoard2(int n) {
+        this.comboBoxIndex = n;
+        this.n = getDimension(n);
+        n = 8;
+        hEdge = new JLabel[n - 1][n];
+        vEdge = new JLabel[n][n - 1];
+        box = new JLabel[n - 1][n - 1];
+ 
+        currentPlayer = player1;
+        for (int i = 0; i < boardstate.isSetHEdge.length; i++) {
+            for (int j = 0; j < boardstate.isSetHEdge[0].length; j++) {
+            	boardstate.isSetHEdge[i][j] = false;
+            }
+        }
+        for (int i = 0; i < boardstate.isSetVEdge.length; i++) {
+            for (int j = 0; j < boardstate.isSetVEdge[0].length; j++) {
+            	boardstate.isSetVEdge[i][j] = false;
+            }
+        }
+        for (int i = 0; i < boardstate.isSetBox.length; i++) {
+            for (int j = 0; j < boardstate.isSetBox[0].length; j++) {
+            	boardstate.isSetBox[i][j] = false;
+            }
+        }
+        this.possibleBoxCount = (n - 1) * (n - 1);
+
     }
 
     public void initializeUIGameBoard() {
@@ -130,16 +191,13 @@ public class GameBoard {
         frame.getContentPane().setLayout(null);
         frame.getContentPane().add(newBackToMenuButton());
         frame.getContentPane().add(drawNewBoard());
-        
+
         messageLabel.setFont(new java.awt.Font("Arial", 0, 20));
-        if(currentPlayer.isPlayer1)
-        {
-            messageLabel.setForeground(player1.color);
+        if (boardstate.currentPlayer.isPlayer1) {
+            messageLabel.setForeground(boardstate.player1.color);
             messageLabel.setText("Player 1's turn.");
-        }
-        else
-        {
-            messageLabel.setForeground(player2.color);
+        } else {
+            messageLabel.setForeground(boardstate.player2.color);
             messageLabel.setText("Player 2's turn.");
         }
         frame.getContentPane().add(messageLabel);
@@ -158,24 +216,18 @@ public class GameBoard {
         player2Label.setBounds(1030, 30, 89, 24);
 
         player1GameStrategyLabel.setFont(new java.awt.Font("Arial", 0, 20));
-        if(player1.title.equals("Human"))
-        {
+        if (player1.title.equals("Human")) {
             player1GameStrategyLabel.setText("Human");
-        }
-        else
-        {
+        } else {
             player1GameStrategyLabel.setText("AI");
         }
         frame.getContentPane().add(player1GameStrategyLabel);
         player1GameStrategyLabel.setBounds(820, 70, 89, 24);
 
         player2GameStrategyLabel.setFont(new java.awt.Font("Arial", 0, 20));
-        if(player2.title.equals("Human"))
-        {
+        if (player2.title.equals("Human")) {
             player2GameStrategyLabel.setText("Human");
-        }
-        else
-        {
+        } else {
             player2GameStrategyLabel.setText("AI");
         }
         frame.getContentPane().add(player2GameStrategyLabel);
@@ -215,41 +267,77 @@ public class GameBoard {
 
         frame.getContentPane().validate();
         frame.setVisible(true);
-
-        // manageGame(); --- a voir //
+        //manageGame();
     }
 
-    public void updateLabels()
-    {
-        player1scoreLabel.setText(Integer.toString(player1.getScore()));
-        player2scoreLabel.setText(Integer.toString(player2.getScore()));
-
-        if(currentPlayer.isPlayer1)
-        {
-            messageLabel.setForeground(player1.color);
+    public void updateLabels() {
+        //player1scoreLabel.setText(Integer.toString(boardstate.player1.getScore()));
+        //player2scoreLabel.setText(Integer.toString(boardstate.player2.getScore()));
+    	int scoreplayer1 = 0;
+    	int scoreplayer2 = 0;
+        if (boardstate.currentPlayer.isPlayer1) {
+            messageLabel.setForeground(boardstate.player1.color);
             messageLabel.setText("Player 1's turn.");
-        }
-        else
-        {
-            messageLabel.setForeground(player2.color);
+        } else {
+            messageLabel.setForeground(boardstate.player2.color);
             messageLabel.setText("Player 2's turn.");
         }
+        
+        for (int i = 0; i < boardstate.boxOwner.length; i++) {
+            for (int j = 0; j < boardstate.boxOwner[0].length; j++) {
+
+            	if (boardstate.boxOwner[i][j]==1) {
+            		 box[i][j].setBackground(boardstate.player1.color);
+            		 scoreplayer1++;
+            	}else if (boardstate.boxOwner[i][j]==2) { 
+            		box[i][j].setBackground(boardstate.player2.color);
+            		scoreplayer2++;
+            	}
+            }
+        }
+        
+        player1scoreLabel.setText(Integer.toString(scoreplayer1));
+        player2scoreLabel.setText(Integer.toString(scoreplayer2));
+        
+        for (int i = 0; i < boardstate.isSetHEdge.length; i++) {
+            for (int j = 0; j < boardstate.isSetHEdge[0].length; j++) {
+            	if (boardstate.HedgeOwner[i][j] == 1) {
+            		hEdge[i][j].setBackground(player1.color);
+            	}else if (boardstate.HedgeOwner[i][j] == 2) {
+            		hEdge[i][j].setBackground(player2.color);
+            	}
+            }
+        }
+       
+        for (int i = 0; i < boardstate.isSetVEdge.length; i++) {
+            for (int j = 0; j < boardstate.isSetVEdge[0].length; j++) {
+            	if (boardstate.VedgeOwner[i][j] == 1) {
+            		vEdge[i][j].setBackground(player1.color);
+            	}else if (boardstate.VedgeOwner[i][j] == 2) {
+            		vEdge[i][j].setBackground(player2.color);
+            	}
+            }
+        }
+        
+        
+        
+       
     }
 
     public void manageGame() {
         while (possibleBoxCount > 0) {
-            if (currentPlayer.title.equals("Human")) {
-                try {
+            if (!ai1 && !ai2) {
+                /*try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
             } else {
-                processMove(currentPlayer.makeMove(this));
+                processMove(move);
             }
 
         }
-        new UISelectionMenu(frame).initializeSelectionMenu();
+      //  new UISelectionMenu(frame).initializeSelectionMenu();
     }
 
     private JLabel newHorizontalEdge() {
@@ -270,12 +358,11 @@ public class GameBoard {
         return label;
     }
 
-    private JLabel drawDots()
-    {
+    private JLabel drawDots() {
         JLabel dot = new JLabel();
         ImageIcon ico = new ImageIcon(UIMainIntro.class.getResource("../images/dotBlack.png"));
-        Image image = ico.getImage(); 
-        Image newimg = image.getScaledInstance(edgeAndDotWidth2, edgeAndDotWidth2,  java.awt.Image.SCALE_SMOOTH); 
+        Image image = ico.getImage();
+        Image newimg = image.getScaledInstance(edgeAndDotWidth2, edgeAndDotWidth2, java.awt.Image.SCALE_SMOOTH);
         ImageIcon newIcon = new ImageIcon(newimg);
         dot.setPreferredSize(new Dimension(edgeAndDotWidth2, edgeAndDotWidth2));
         dot.setIcon(newIcon);
@@ -290,25 +377,24 @@ public class GameBoard {
         return label;
     }
 
-    private JPanel drawNewBoard()
-    {
+    private JPanel drawNewBoard() {
         JPanel grid = new JPanel(new GridBagLayout());
         grid.setOpaque(false);
         grid.setBackground(Color.WHITE);
-        edgeLength2 = 720/(n+2);
-        edgeAndDotWidth2 = edgeLength2/10;
+        edgeLength2 = 720 / (n + 2);
+        edgeAndDotWidth2 = edgeLength2 / 10;
         grid.setBounds(70, 0, 720, 720);
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = 0;
         constraints.gridy = 0;
-
+        n=boardstate.n;
         hEdge = new JLabel[n - 1][n];
-        isSetBox = new boolean [n-1][n-1];
-        isSetHEdge = new boolean[n - 1][n];
+//        isSetBox = new boolean[n - 1][n - 1];
+//        isSetHEdge = new boolean[n - 1][n];
 
         vEdge = new JLabel[n][n - 1];
-        isSetVEdge = new boolean[n][n - 1];
+//        isSetVEdge = new boolean[n][n - 1];
 
         box = new JLabel[n - 1][n - 1];
 
@@ -374,9 +460,9 @@ public class GameBoard {
 
     public boolean isFilled(Edge edge) {
         if (edge.isHorizontal()) {
-            return isSetHEdge[edge.getX()][edge.getY()];
+            return boardstate.isSetHEdge[edge.getX()][edge.getY()];
         }
-        return isSetVEdge[edge.getX()][edge.getY()];
+        return boardstate.isSetVEdge[edge.getX()][edge.getY()];
     }
 
     /**
@@ -387,12 +473,13 @@ public class GameBoard {
      */
     public boolean fillEdge(Edge edge) {
         //mark the edge within given coordinates as filled
-        if (edge.isHorizontal() && !isSetHEdge[edge.getX()][edge.getY()]) {
-            isSetHEdge[edge.getX()][edge.getY()] = true;
+        if (edge.isHorizontal() && !boardstate.isSetHEdge[edge.getX()][edge.getY()]) {
+        	boardstate.isSetHEdge[edge.getX()][edge.getY()] = true;
             hEdge[edge.getX()][edge.getY()].setBackground(currentPlayer.color);
             return true;
-        } else if (!edge.isHorizontal() && !isSetVEdge[edge.getX()][edge.getY()]) {
-            isSetVEdge[edge.getX()][edge.getY()] = true;
+        } else if (!edge.isHorizontal() && !boardstate.isSetVEdge[edge.getX()][edge.getY()]) {
+        	boardstate.isSetVEdge[edge.getX()][edge.getY()] = true;
+            System.out.println(edge.getY());
             vEdge[edge.getX()][edge.getY()].setBackground(currentPlayer.color);
             return true;
         } else {
@@ -400,12 +487,12 @@ public class GameBoard {
         }
     }
 
-    public boolean onlyFillBoxIfPossible(){
+    public boolean onlyFillBoxIfPossible() {
         boolean boxUpdated = false;
-        for (int i = 0; i < isSetBox.length; i++) {
-            for (int j = 0; j < isSetBox[0].length; j++) {
-                if ((isSetHEdge[i][j]) && (isSetVEdge[i][j]) && (isSetHEdge[i][j+1]) && (isSetVEdge[i+1][j])&&!isSetBox[i][j]) {
-                    isSetBox[i][j]=true;
+        for (int i = 0; i < boardstate.isSetBox.length; i++) {
+            for (int j = 0; j < boardstate.isSetBox[0].length; j++) {
+                if ((boardstate.isSetHEdge[i][j]) && (boardstate.isSetVEdge[i][j]) && (boardstate.isSetHEdge[i][j + 1]) && (boardstate.isSetVEdge[i + 1][j]) && !boardstate.isSetBox[i][j]) {
+                	boardstate.isSetBox[i][j] = true;
                     box[i][j].setBackground(currentPlayer.color);
                     possibleBoxCount--;
                     currentPlayer.setScore(currentPlayer.getScore() + 1);
@@ -424,11 +511,11 @@ public class GameBoard {
      * @return true if a box is detected as set
      */
     public boolean isBoxComplete(int x, int y) {
-        if (isSetBox[x][y]) {
+        if (boardstate.isSetBox[x][y]) {
             return true;
         }
-        if ((isSetHEdge[x][y]) && (isSetVEdge[x][y]) && (isSetHEdge[x][y+1]) && (isSetVEdge[x+1][y])) {
-            isSetBox[x][y]=true;
+        if ((boardstate.isSetHEdge[x][y]) && (boardstate.isSetVEdge[x][y]) && (boardstate.isSetHEdge[x][y + 1]) && (boardstate.isSetVEdge[x + 1][y])) {
+        	boardstate.isSetBox[x][y] = true;
             box[x][y].setBackground(currentPlayer.color);
             currentPlayer.setScore(currentPlayer.getScore() + 1);
             possibleBoxCount--;
@@ -441,22 +528,18 @@ public class GameBoard {
     }
 
     public void switchPlayers() {
-        if (currentPlayer.isPlayer1) {
-            currentPlayer = player2;
-            if (player2.title.equals("Human")) {
-                mouseEnabled = true;
-            } else {
-                mouseEnabled = false;
-            }
-        } else {
-            currentPlayer = player1;
-            if (player1.title.equals("Human")) {
-                mouseEnabled = true;
-            } else {
-                mouseEnabled = false;
-            }
-        }
+       boardstate.switchPlayers();
         updateLabels();
+    }
+
+    public static GameStrategy switchTurn(GameStrategy currentPlayer){
+        if(currentPlayer.isPlayer1){
+            currentPlayer.isPlayer1 = false;
+            return currentPlayer;//set player 2 true
+        }else{
+            currentPlayer.isPlayer1 = true;
+            return currentPlayer;
+        }
     }
 
     public int getPossibleBoxCount() {
@@ -465,40 +548,253 @@ public class GameBoard {
 
     private boolean processMove(Edge location) {
 
-        if (fillEdge(location)) {
-            if(!onlyFillBoxIfPossible())
-            {
-                switchPlayers();
+    	return boardstate.processMove(location);
+    	
+//        if (fillEdge(location)) {
+//            if (!onlyFillBoxIfPossible()) {
+//                switchPlayers();
+//            }
+//            return true;
+//        } else {
+//            return false;
+//        }
+    }
+    
+
+
+    /**
+     * @return available moves
+     */
+    public ArrayList<Edge> getMoves() {
+        /*ArrayList<Edge> moves = new ArrayList<Edge>();
+
+        for (int i = 0; i < isSetHEdge.length; i++) {
+            for (int j = 0; j < isSetHEdge[0].length; j++) {
+                if (isSetHEdge[i][j] == false) {
+                    moves.add(new Edge(i, j, true));
+                }
             }
-            return true;
-        } else {
-            return false;
         }
+
+        for (int i = 0; i < isSetVEdge.length; i++) {
+            for (int j = 0; j < isSetVEdge[0].length; j++) {
+                if (isSetVEdge[i][j] == false) {
+                    moves.add(new Edge(i, j, false));
+                }
+            }
+        }
+
+        return moves;*/
+        ArrayList<Edge> moves = new ArrayList<Edge>();
+        for(int i = 0; i < (n-1); i++)
+        {
+            for(int j = 0; j<n; j++)
+            {
+                if(hEdge[i][j].getBackground() == Color.WHITE)
+                {
+                    moves.add(new Edge(i,j,true));
+                }
+            }
+        }
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < (n-1); j++)
+            {
+                if(vEdge[i][j].getBackground() == Color.WHITE)
+                {
+                    moves.add(new Edge(i,j,false));
+                }
+            }
+        }
+        return moves;
     }
 
-    public int getDimension()
-    {
+
+    public int getDimension(int comboBoxIndex) {
         int res = -1;
-        if(comboBoxIndex == 0)
-        {
+        if (comboBoxIndex == 0) {
             res = 3;
-        }
-        else if(comboBoxIndex == 1)
-        {
+        } else if (comboBoxIndex == 1) {
             res = 4;
-        }
-        else if(comboBoxIndex == 2)
-        {
+        } else if (comboBoxIndex == 2) {
             res = 5;
-        }
-        else if(comboBoxIndex == 3)
-        {
+        } else if (comboBoxIndex == 3) {
             res = 7;
-        }
-        else
-        {
+        } else {
             res = 8;
         }
         return res;
     }
+
+    public int chain() {
+        return 0;
+    }
+
+//    public GameBoard copyGameBoard() {
+//        GameBoard clonedBoard = new GameBoard(n);    
+//      
+//        for (int i = 0; i < hEdge.length; i++) {
+//            for (int j = 0; j < hEdge[0].length; j++) {
+//                clonedBoard.hEdge[i][j] = hEdge[i][j];
+//                clonedBoard.isSetHEdge[i][j] = boardstate.isSetHEdge[i][j];
+//            }
+//        }
+//
+//        for (int i = 0; i < vEdge.length; i++) {
+//            for (int j = 0; j < vEdge[0].length; j++) {
+//                clonedBoard.vEdge[i][j] = vEdge[i][j];
+//                clonedBoard.isSetVEdge[i][j] = isSetVEdge[i][j];
+//            }
+//        }
+//
+//        for (int i = 0; i < box.length; i++) {
+//            for (int j = 0; j < box[0].length; j++) {
+//                clonedBoard.box[i][j] = box[i][j];
+//                clonedBoard.isSetBox[i][j] = isSetBox[i][j];
+//            }
+//        }
+//        
+//        clonedBoard.scorePlayer1 = scorePlayer1;
+//        clonedBoard.scorePlayer2 = scorePlayer2;
+//        clonedBoard.currentPlayer=currentPlayer;
+//        clonedBoard.backgroundLabel=backgroundLabel;
+//        clonedBoard.ai1=ai1;
+//        clonedBoard.ai2=ai2;
+//        clonedBoard.player1=player1;
+//        clonedBoard.player2=player2;
+//        clonedBoard.player1scoreLabel=player1scoreLabel;
+//        clonedBoard.player2scoreLabel=player2scoreLabel;
+//        clonedBoard.messageLabel=messageLabel;
+//
+//
+//        return clonedBoard;
+//    }
+
+
+//    public GameBoard updateBoard(Edge edge) {
+//
+//        GameBoard updatedBoard = copyGameBoard();
+//        updatedBoard.processMove(edge);
+//
+//
+//        return updatedBoard;
+//
+//    }
+
+    /**
+     * count the filled edges of a box on a specific coordinate
+     *
+     * @param x
+     * @param y
+     * @return the number of edges filled
+//     */
+//    private int countEdges(int x, int y) {
+//        int numberEdges = 0;
+//        if (isSetHEdge[x][y]) {
+//            numberEdges++;
+//        }
+//        if (isSetHEdge[x][y + 1]) {
+//            numberEdges++;
+//        }
+//        if (isSetVEdge[x][y]) {
+//            numberEdges++;
+//        }
+//        if (isSetVEdge[x + 1][y]) {
+//            numberEdges++;
+//        }
+//        return numberEdges;
+//    }
+//
+//    public int getNumberOfBoxes(int missingLine) {
+//        int numBox = 0;
+//        for (int i = 0; i < isSetBox.length; i++) {
+//            for (int j = 0; j < isSetBox[0].length; j++) {
+//                if (getMissingLines(i, j) == missingLine) {
+//                    numBox++;
+//                }
+//            }
+//        }
+//        return numBox;
+//    }
+//
+//    public int getMissingLines(int x, int y) {
+//        int missingLines = 0;
+//        missingLines = 4 - countEdges(x, y);
+//
+//        return missingLines;
+//    }
+
+
+    public int getScore(boolean isPlayer1) {
+        if (isPlayer1) {
+            return player1.getScore();
+        }
+        return player2.getScore();
+    }
+
+    /**
+     * computes a child of a board state
+     * @param edge
+     * @return child
+     */
+//    public GameBoard computeAChild(Edge edge) {
+//
+//        GameBoard child = this.copyGameBoard();
+//        child.updateBoard(edge);
+//
+//        return child;
+//    }
+
+    /**
+     * computes the children of a cuurent board state
+     */
+//    public void computeChildren(){
+//        ArrayList<GameBoard> output = new ArrayList<>();
+//
+//        for(Edge edge : this.getMoves()){
+//            GameBoard child = computeAChild(edge);
+//            output.add(child);
+//        }
+//        this.children = output;
+//    }
+
+//    public ArrayList<GameBoard> getChildren(){
+//        if(this.children == null){
+//            computeChildren();
+//        }
+//        return this.children;
+//    }
+
+    /**
+     * finds the neew added edge if there is any between parent and child state
+     * @param parentEdges
+     * @param childEdges
+     * @return
+     */
+    public Edge findNewLine(ArrayList<Edge> parentEdges, ArrayList<Edge> childEdges){
+
+        Edge arbitraryEdge = null;
+
+        for(Edge edge : parentEdges){
+            if(childEdges.contains(edge) == false){
+                return  edge;
+            }
+        }
+        if(arbitraryEdge == null){
+            return childEdges.get(0);
+        }
+
+        return arbitraryEdge;
+    }
+
+    public GameStrategy getCurrentPlayer(){
+        return this.currentPlayer;
+    }
+
+
+
+
+
+
 }
+
