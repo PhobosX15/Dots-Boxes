@@ -561,7 +561,6 @@ public class GameBoard {
     }
 
 
-
     /**
      * @return available moves
      */
