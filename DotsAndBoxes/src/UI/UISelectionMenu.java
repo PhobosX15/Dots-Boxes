@@ -78,7 +78,7 @@ public class UISelectionMenu {
     }
 
     private JButton[] getSelectorButtons() {
-        JButton[] buttons = new JButton[6];
+        JButton[] buttons = new JButton[8];
 
         ImageIcon p1Human = new ImageIcon(UIMainIntro.class.getResource("../images/Human Player Button.png"));
         JButton bp1Human = new JButton(p1Human);
@@ -101,6 +101,15 @@ public class UISelectionMenu {
         ImageIcon p1Ai2 = new ImageIcon(UIMainIntro.class.getResource("../images/Ai 2 button.png"));
         JButton bp1Ai2 = new JButton(p1Ai2);
         bp1Ai2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                player1 = new GreedyAI(true, Color.CYAN);
+                updateGameLabel();
+            }
+        });
+        ImageIcon p1Ai3 = new ImageIcon(UIMainIntro.class.getResource("../images/random.png"));
+        JButton bp1Ai3 = new JButton(p1Ai3);
+        bp1Ai3.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 player1 = new GreedyAI(true, Color.CYAN);
@@ -135,6 +144,15 @@ public class UISelectionMenu {
                 updateGameLabel();
             }
         });
+        ImageIcon p2Ai3 = new ImageIcon(UIMainIntro.class.getResource("../images/random.png"));
+        JButton bp2Ai3 = new JButton(p1Ai3);
+        bp2Ai3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                player2 = new RandomAI(false, Color.GREEN);
+                updateGameLabel();
+            }
+        });
         int x = 380, y = 170, w = 125, h = 60, x2 = 650;
         bp1Human.setBounds(x, y, w, h);
         bp2Human.setBounds(x2, y, w, h);
@@ -142,12 +160,16 @@ public class UISelectionMenu {
         bp2Ai1.setBounds(x2, (int) (y + 100), w, h);
         bp1Ai2.setBounds(x, (int) (y + 200), w, h);
         bp2Ai2.setBounds(x2, (int) (y + 200), w, h);
+        bp1Ai3.setBounds(x,(int)(y+300),w,h);
+        bp2Ai3.setBounds(x2,(int)(y+300),w,h);
         buttons[0] = (bp1Human);
         buttons[1] = (bp2Human);
         buttons[2] = (bp1Ai1);
         buttons[3] = (bp2Ai1);
         buttons[4] = (bp1Ai2);
         buttons[5] = (bp2Ai2);
+        buttons[6] = bp1Ai3;
+        buttons[7] = bp2Ai3;
 
         return buttons;
     }

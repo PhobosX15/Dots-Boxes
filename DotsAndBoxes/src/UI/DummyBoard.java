@@ -215,8 +215,12 @@ public class DummyBoard {
             }else if(player2.title.equals("Greedy")){
 
                 move = player2.makeMove(this);
-                //processMove(move);
-                //currentPlayer=player1;
+
+            }else if(player2.title.equals("Random AI")){
+                System.out.println("Random AIs turn");
+
+                move =   player2.makeMove(this);
+
             }
             else {
 
@@ -234,6 +238,11 @@ public class DummyBoard {
                 move =   player2.makeMove(this);
                 //processMove(move);
                 // currentPlayer=player2;
+            }else if(player2.title.equals("Random")){
+                System.out.println("Random AIs turn");
+
+                move =   player2.makeMove(this);
+
             } else {
 
             }
