@@ -149,7 +149,7 @@ public class UISelectionMenu {
         bp2Ai3.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player2 = new RandomAI(false, Color.GREEN);
+                player2 = new AlphaBeta(false, Color.GREEN);
                 updateGameLabel();
             }
         });

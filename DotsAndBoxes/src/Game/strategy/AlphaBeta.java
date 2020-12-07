@@ -10,11 +10,11 @@ import java.util.ArrayList;
 public class AlphaBeta extends GameStrategy{
 
     private int maxDepth;
-    private  int MIN = -1000000000;
-    private int MAX = 1000000000;
+    private  int MIN = -2147483647;
+    private int MAX = 2147483647;
 
-    public AlphaBeta(String title, boolean isPlayer1, Color color) {
-        super(title, isPlayer1, color);
+    public AlphaBeta( boolean isPlayer1, Color color) {
+        super("ab", isPlayer1, color);
     }
 
     public int alphaBeta(DummyBoard b, int depth, Boolean maximizingPlayer,int alpha,int beta) {
@@ -39,6 +39,10 @@ public class AlphaBeta extends GameStrategy{
                     score = alphaBeta(temp, depth - 1, false,alpha,beta);
                 }
                 maxEva = Math.max(maxEva, score);
+                if(maxEva <= alpha){
+                    beta = Math.min(maxEva,score);
+                    return maxEva;
+                }
 
             }
             return maxEva;
@@ -64,7 +68,10 @@ public class AlphaBeta extends GameStrategy{
                 }
                 minEva = Math.min(minEva, score);
             }
-
+            if(minEva <= beta){
+                beta = Math.max(minEva,score);
+                return minEva;
+            }
             return minEva;
         }
 
@@ -89,6 +96,7 @@ public class AlphaBeta extends GameStrategy{
             }else {
                 eval = alphaBeta(temp, depth, false,alpha,beta);
             }
+
 
             if (eval > max) {
                 max = eval;

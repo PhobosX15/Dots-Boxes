@@ -205,7 +205,7 @@ public class DummyBoard {
 
                 move = player2.makeMove(this);
 
-            }else if(player2.title.equals("Random AI")){
+            }else if(player2.title.equals("ab")){
                 System.out.println("Random AIs turn");
 
                 move =   player2.makeMove(this);
@@ -227,10 +227,10 @@ public class DummyBoard {
                 move =   player2.makeMove(this);
                 //processMove(move);
                 // currentPlayer=player2;
-            }else if(player2.title.equals("Random")){
+            }else if(player2.title.equals("ab")){
                 System.out.println("Random AIs turn");
 
-                move =   player2.makeMove(this);
+                move = player2.makeMove(this);
 
             } else {
 
