@@ -1,9 +1,6 @@
 package UI;
 
-import Game.strategy.GameStrategy;
-import Game.strategy.Game_Strategy_AI_1_example;
-import Game.strategy.Game_Strategy_AI_2_example;
-import Game.strategy.Game_Strategy_Human;
+import Game.strategy.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +21,7 @@ public class UISelectionMenu {
      */
     int length = 10;// -1;
     GameStrategy player1 = new Game_Strategy_Human(true, Color.CYAN);
-    GameStrategy player2 = new Game_Strategy_Human(false, Color.GREEN);
+    GameStrategy player2 = new Game_Strategy_Human(false, Color.GREEN); /// neeeds to be fixed
     JLabel gameLabel = getGameLabel();
     GameBoard gameBoard;
     public boolean isNotGamePlay = true;
@@ -81,7 +78,7 @@ public class UISelectionMenu {
     }
 
     private JButton[] getSelectorButtons() {
-        JButton[] buttons = new JButton[6];
+        JButton[] buttons = new JButton[8];
 
         ImageIcon p1Human = new ImageIcon(UIMainIntro.class.getResource("../images/Human Player Button.png"));
         JButton bp1Human = new JButton(p1Human);
@@ -97,7 +94,7 @@ public class UISelectionMenu {
         bp1Ai1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player1 = new Game_Strategy_AI_1_example(true, Color.CYAN);
+                player1 = new MinimaxAI(true, Color.CYAN);
                 updateGameLabel();
             }
         });
@@ -106,7 +103,16 @@ public class UISelectionMenu {
         bp1Ai2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player1 = new Game_Strategy_AI_2_example(true, Color.CYAN);
+                player1 = new GreedyAI(true, Color.CYAN);
+                updateGameLabel();
+            }
+        });
+        ImageIcon p1Ai3 = new ImageIcon(UIMainIntro.class.getResource("../images/random.png"));
+        JButton bp1Ai3 = new JButton(p1Ai3);
+        bp1Ai3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                player1 = new GreedyAI(true, Color.CYAN);
                 updateGameLabel();
             }
         });
@@ -125,7 +131,7 @@ public class UISelectionMenu {
         bp2Ai1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player2 = new Game_Strategy_AI_1_example(false, Color.GREEN);
+                player2 = new MinimaxAI(false, Color.GREEN);
                 updateGameLabel();
             }
         });
@@ -134,7 +140,16 @@ public class UISelectionMenu {
         bp2Ai2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                player2 = new Game_Strategy_AI_2_example(false, Color.GREEN);
+                player2 = new GreedyAI(false, Color.GREEN);
+                updateGameLabel();
+            }
+        });
+        ImageIcon p2Ai3 = new ImageIcon(UIMainIntro.class.getResource("../images/random.png"));
+        JButton bp2Ai3 = new JButton(p1Ai3);
+        bp2Ai3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                player2 = new AlphaBeta(false, Color.GREEN);
                 updateGameLabel();
             }
         });
@@ -145,12 +160,16 @@ public class UISelectionMenu {
         bp2Ai1.setBounds(x2, (int) (y + 100), w, h);
         bp1Ai2.setBounds(x, (int) (y + 200), w, h);
         bp2Ai2.setBounds(x2, (int) (y + 200), w, h);
+        bp1Ai3.setBounds(x,(int)(y+300),w,h);
+        bp2Ai3.setBounds(x2,(int)(y+300),w,h);
         buttons[0] = (bp1Human);
         buttons[1] = (bp2Human);
         buttons[2] = (bp1Ai1);
         buttons[3] = (bp2Ai1);
         buttons[4] = (bp1Ai2);
         buttons[5] = (bp2Ai2);
+        buttons[6] = bp1Ai3;
+        buttons[7] = bp2Ai3;
 
         return buttons;
     }
