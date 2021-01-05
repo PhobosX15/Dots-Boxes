@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 
 public class StartGameMouseAdapter extends MouseAdapter {
     JButton startGameBoard;
-    ImageIcon startB = new ImageIcon(UIMainIntro.class.getResource("../images/start.png"));
+    ImageIcon startButton = new ImageIcon(UIMainIntro.class.getResource("../images/start.png"));
     UISelectionMenu menu;
     public StartGameMouseAdapter(JButton x, UISelectionMenu menu) {
         startGameBoard=x;
@@ -16,13 +16,13 @@ public class StartGameMouseAdapter extends MouseAdapter {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        startGameBoard.setIcon(startB);
+        startGameBoard.setIcon(startButton);
         startGameBoard.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        startGameBoard.setIcon(startB);
+        startGameBoard.setIcon(startButton);
         startGameBoard.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -37,7 +37,6 @@ public class StartGameMouseAdapter extends MouseAdapter {
                 System.out.println(menu.player1.title);
                 System.out.println(menu.player2.title);
             } catch (NumberFormatException hsdkf) {
-                //menu.warningGameLabel();
             }
         }
     }

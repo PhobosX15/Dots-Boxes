@@ -1,12 +1,8 @@
 package UI;
-import java.awt.Color;
+
 import java.util.ArrayList;
 
-import javax.swing.JLabel;
-
 import Game.strategy.GameStrategy;
-import UI.Edge;
-import UI.GameBoard;
 
 public class DummyBoard {
 
@@ -15,156 +11,115 @@ public class DummyBoard {
     public GameStrategy currentPlayer;
     public int n;
     public int possibleBoxCount;
-
-    public int edgeAndDotWidth2;
-    public int edgeLength2;
     public int scorePlayer1 = 0;
     public int scorePlayer2 = 0;
-    public boolean ai1, ai2 = true;
     public int comboBoxIndex;
     Edge move;
-
     public boolean[][] isSetHEdge;
     public boolean[][] isSetVEdge;
     public boolean[][] isSetBox;
     public int[][] boxOwner;
-    public int[][] HedgeOwner;
-    public int[][] VedgeOwner;
-
-    public ArrayList<DummyBoard> children;
+    public int[][] hEdgeOwner;
+    public int[][] vEdgeOwner;
 
     public DummyBoard(int n) {
-        this.n=n;
-
-        isSetHEdge = new boolean[n-1][n];
-        HedgeOwner=new int [n-1][n];
-        isSetVEdge = new boolean[n][n-1];
-        VedgeOwner=new int [n][n-1];
-        isSetBox = new boolean[n-1][n-1];
-        boxOwner=new int[n-1][n-1];
+        this.n = n;
+        isSetHEdge = new boolean[n - 1][n];
+        hEdgeOwner = new int[n - 1][n];
+        isSetVEdge = new boolean[n][n - 1];
+        vEdgeOwner = new int[n][n - 1];
+        isSetBox = new boolean[n - 1][n - 1];
+        boxOwner = new int[n - 1][n - 1];
         currentPlayer = player1;
         for (int i = 0; i < isSetHEdge.length; i++) {
             for (int j = 0; j < isSetHEdge[0].length; j++) {
                 isSetHEdge[i][j] = false;
-                HedgeOwner[i][j] = -1;
+                hEdgeOwner[i][j] = -1;
             }
         }
         for (int i = 0; i < isSetVEdge.length; i++) {
             for (int j = 0; j < isSetVEdge[0].length; j++) {
                 isSetVEdge[i][j] = false;
-                VedgeOwner[i][j] = -1;
+                vEdgeOwner[i][j] = -1;
             }
         }
         for (int i = 0; i < isSetBox.length; i++) {
             for (int j = 0; j < isSetBox[0].length; j++) {
                 isSetBox[i][j] = false;
-                boxOwner[i][j]= -1;
+                boxOwner[i][j] = -1;
             }
         }
         this.possibleBoxCount = (n - 1) * (n - 1);
-
     }
 
     public void copyGameBoard(DummyBoard realboard) {
-
-
         for (int i = 0; i < isSetHEdge.length; i++) {
             for (int j = 0; j < isSetHEdge[0].length; j++) {
                 this.isSetHEdge[i][j] = realboard.isSetHEdge[i][j];
-                this.HedgeOwner[i][j] = realboard.HedgeOwner[i][j];
+                this.hEdgeOwner[i][j] = realboard.hEdgeOwner[i][j];
             }
         }
-
         for (int i = 0; i < isSetVEdge.length; i++) {
             for (int j = 0; j < isSetVEdge[0].length; j++) {
                 this.isSetVEdge[i][j] = realboard.isSetVEdge[i][j];
-                this.VedgeOwner[i][j] = realboard.VedgeOwner[i][j];
+                this.vEdgeOwner[i][j] = realboard.vEdgeOwner[i][j];
             }
         }
-
         for (int i = 0; i < isSetBox.length; i++) {
             for (int j = 0; j < isSetBox[0].length; j++) {
-
                 this.isSetBox[i][j] = realboard.isSetBox[i][j];
             }
         }
-
         for (int i = 0; i < boxOwner.length; i++) {
             for (int j = 0; j < boxOwner[0].length; j++) {
-
                 this.boxOwner[i][j] = realboard.boxOwner[i][j];
             }
         }
-
         this.scorePlayer1 = realboard.scorePlayer1;
         this.scorePlayer2 = realboard.scorePlayer2;
-        this.currentPlayer=realboard.getCurrentPlayer();
-        this.player1=realboard.player1;
-        this.player2=realboard.player2;
-
-
+        this.currentPlayer = realboard.getCurrentPlayer();
+        this.player1 = realboard.player1;
+        this.player2 = realboard.player2;
     }
 
-    public void  processPlayerMove(Edge location) {
+    public void processPlayerMove(Edge location) {
         fillEdge(location);
         if (!onlyFillBoxIfPossible()) {
             switchPlayers();
         }
-
     }
 
     public void processAIMove(Edge location) {
         fillEdge(location);
         if (!onlyFillBoxIfPossible()) {
             switchPlayers();
-        }else {
-            move=player2.makeMove(this);
+        } else {
+            move = player2.makeMove(this);
         }
-
     }
 
     public void processAIMove2(Edge location) {
         fillEdge(location);
         if (!onlyFillBoxIfPossible()) {
             if (currentPlayer.isPlayer1) {
-                currentPlayer=player2;
-            }else {
-                currentPlayer=player1;
+                currentPlayer = player2;
+            } else {
+                currentPlayer = player1;
             }
-
-        }else {
-            //move=player2.makeMove(this);
-        }
-
-    }
-
-    public boolean processMove(Edge location) {
-
-        if (fillEdge(location)) {
-            if (!onlyFillBoxIfPossible()) {
-                //switchPlayers();
-                //currentPlayer.makeMove(this);
-            }else {
-                move=null;
-                currentPlayer.makeMove(this);
-            }
-            return true;
         } else {
-            return false;
         }
     }
 
     public boolean fillEdge(Edge edge) {
         //mark the edge within given coordinates as filled
-
-        int playernumber=currentPlayer.isPlayer1? 1:2;
+        int playernumber = currentPlayer.isPlayer1 ? 1 : 2;
         if (edge.isHorizontal() && !isSetHEdge[edge.getX()][edge.getY()]) {
             isSetHEdge[edge.getX()][edge.getY()] = true;
-            HedgeOwner[edge.getX()][edge.getY()] =playernumber;
+            hEdgeOwner[edge.getX()][edge.getY()] = playernumber;
             return true;
         } else if (!edge.isHorizontal() && !isSetVEdge[edge.getX()][edge.getY()]) {
             isSetVEdge[edge.getX()][edge.getY()] = true;
-            VedgeOwner[edge.getX()][edge.getY()] =playernumber;
+            vEdgeOwner[edge.getX()][edge.getY()] = playernumber;
             return true;
         } else {
             return false;
@@ -180,65 +135,46 @@ public class DummyBoard {
                     possibleBoxCount--;
                     currentPlayer.setScore(currentPlayer.getScore() + 1);
                     if (currentPlayer.isPlayer1) {
-                        boxOwner[i][j]=1;
-                    }else {
-                        boxOwner[i][j]=2;
+                        boxOwner[i][j] = 1;
+                    } else {
+                        boxOwner[i][j] = 2;
                     }
-
                     boxUpdated = true;
                 }
             }
         }
         return boxUpdated;
-
     }
 
     public Edge switchPlayers() {
-        move=null;
+        move = null;
         if (currentPlayer.isPlayer1) {
             currentPlayer = player2;
             if (player2.title.equals("Human")) {
-            } else if(player2.title.equals("Minimax")){
-
-                move =  player2.makeMove(this);
-            }else if(player2.title.equals("Greedy")){
-
+            } else if (player2.title.equals("Minimax")) {
                 move = player2.makeMove(this);
-
-            }else if(player2.title.equals("ab")){
+            } else if (player2.title.equals("Greedy")) {
+                move = player2.makeMove(this);
+            } else if (player2.title.equals("ab")) {
                 System.out.println("Random AIs turn");
-
-                move =   player2.makeMove(this);
-
-            }
-            else {
-
+                move = player2.makeMove(this);
+            } else {
             }
         } else {
             currentPlayer = player1;
             if (player1.title.equals("Human")) {
-
-            } else if(player2.title.equals("Minimax")){
-
-                move =  player2.makeMove(this);
-            }else if(player2.title.equals("Greedy")){
-                System.out.println("Random AIs turn");
-
-                move =   player2.makeMove(this);
-                //processMove(move);
-                // currentPlayer=player2;
-            }else if(player2.title.equals("ab")){
-                System.out.println("Random AIs turn");
-
+            } else if (player2.title.equals("Minimax")) {
                 move = player2.makeMove(this);
-
+            } else if (player2.title.equals("Greedy")) {
+                System.out.println("Random AIs turn");
+                move = player2.makeMove(this);
+            } else if (player2.title.equals("ab")) {
+                System.out.println("Random AIs turn");
+                move = player2.makeMove(this);
             } else {
-
             }
         }
-
         return move;
-
     }
 
     public int getScore(boolean isPlayer1) {
@@ -250,7 +186,6 @@ public class DummyBoard {
 
     public ArrayList<Edge> getMoves() {
         ArrayList<Edge> moves = new ArrayList<Edge>();
-
         for (int i = 0; i < isSetHEdge.length; i++) {
             for (int j = 0; j < isSetHEdge[0].length; j++) {
                 if (isSetHEdge[i][j] == false) {
@@ -258,7 +193,6 @@ public class DummyBoard {
                 }
             }
         }
-
         for (int i = 0; i < isSetVEdge.length; i++) {
             for (int j = 0; j < isSetVEdge[0].length; j++) {
                 if (isSetVEdge[i][j] == false) {
@@ -266,19 +200,10 @@ public class DummyBoard {
                 }
             }
         }
-
         return moves;
-
     }
 
-    public DummyBoard updateBoard(Edge edge) {
-        DummyBoard updatedBoard=null;
-        return updatedBoard;
-
-    }
-
-
-    public GameStrategy getCurrentPlayer(){
+    public GameStrategy getCurrentPlayer() {
         return this.currentPlayer;
     }
 
@@ -297,7 +222,6 @@ public class DummyBoard {
     public int getMissingLines(int x, int y) {
         int missingLines = 0;
         missingLines = 4 - countEdges(x, y);
-
         return missingLines;
     }
 
@@ -319,82 +243,13 @@ public class DummyBoard {
         return numberEdges;
     }
 
-    public ArrayList<DummyBoard> getChildren(){
-        if(this.children == null){
-            computeChildren();
-        }
-        return this.children;
-    }
-    public void computeChildren(){
-        ArrayList<DummyBoard> output = new ArrayList<>();
-
-        for(Edge edge : this.getMoves()){
-            DummyBoard child = computeAChild(edge);
-            output.add(child);
-        }
-        this.children = output;
-    }
-
-    public DummyBoard computeAChild(Edge edge) {
-
-        DummyBoard child = new DummyBoard(this.n);
-        child.copyGameBoard(this);
-        child.updateBoard(edge);
-
-        return child;
-    }
-
-    public int getDimension() {
-        int res = -1;
-        if (comboBoxIndex == 0) {
-            res = 3;
-        } else if (comboBoxIndex == 1) {
-            res = 4;
-        } else if (comboBoxIndex == 2) {
-            res = 5;
-        } else if (comboBoxIndex == 3) {
-            res = 7;
-        } else {
-            res = 8;
-        }
-        return res;
-    }
-
-    public Edge findNewLine(ArrayList<Edge> parentEdges, ArrayList<Edge> childEdges){
-
-        Edge arbitraryEdge = null;
-
-        for(Edge edge : parentEdges){
-            if(childEdges.contains(edge) == false){
-                return  edge;
-            }
-        }
-        if(arbitraryEdge == null){
-            return childEdges.get(0);
-        }
-
-        return arbitraryEdge;
-    }
-
-    public static GameStrategy switchTurn(GameStrategy currentPlayer){
-        if(currentPlayer.isPlayer1){
-            currentPlayer.isPlayer1 = false;
-            return currentPlayer;//set player 2 true
-        }else{
-            currentPlayer.isPlayer1 = true;
-            return currentPlayer;
-        }
-    }
-
     public int calculateScorePlayer1() {
-        int score=0;
+        int score = 0;
         for (int i = 0; i < boxOwner.length; i++) {
             for (int j = 0; j < boxOwner[0].length; j++) {
-
-                if (boxOwner[i][j]==1) {
+                if (boxOwner[i][j] == 1) {
                     score++;
-                }else if (boxOwner[i][j]==2) {
-                    //scoreplayer2++;
+                } else if (boxOwner[i][j] == 2) {
                 }
             }
         }
@@ -402,13 +257,12 @@ public class DummyBoard {
     }
 
     public int calculateScorePlayer2() {
-        int score=0;
+        int score = 0;
         for (int i = 0; i < boxOwner.length; i++) {
             for (int j = 0; j < boxOwner[0].length; j++) {
+                if (boxOwner[i][j] == 1) {
 
-                if (boxOwner[i][j]==1) {
-                    //scoreplayer1++;
-                }else if (boxOwner[i][j]==2) {
+                } else if (boxOwner[i][j] == 2) {
                     score++;
                 }
             }

@@ -117,17 +117,16 @@ public class UISelectionMenu {
             }
         });
         ImageIcon p2Human = new ImageIcon(UIMainIntro.class.getResource("../images/Human Player Button.png"));
-        JButton bp2Human = new JButton(p1Human);
+        JButton bp2Human = new JButton(p2Human);
         bp2Human.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 player2 = new Game_Strategy_Human(false, Color.GREEN);
                 updateGameLabel();
-
             }
         });
         ImageIcon p2Ai1 = new ImageIcon(UIMainIntro.class.getResource("../images/Ai 1 button.png"));
-        JButton bp2Ai1 = new JButton(p1Ai1);
+        JButton bp2Ai1 = new JButton(p2Ai1);
         bp2Ai1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -136,7 +135,7 @@ public class UISelectionMenu {
             }
         });
         ImageIcon p2Ai2 = new ImageIcon(UIMainIntro.class.getResource("../images/Ai 2 button.png"));
-        JButton bp2Ai2 = new JButton(p1Ai2);
+        JButton bp2Ai2 = new JButton(p2Ai2);
         bp2Ai2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -145,7 +144,7 @@ public class UISelectionMenu {
             }
         });
         ImageIcon p2Ai3 = new ImageIcon(UIMainIntro.class.getResource("../images/random.png"));
-        JButton bp2Ai3 = new JButton(p1Ai3);
+        JButton bp2Ai3 = new JButton(p2Ai3);
         bp2Ai3.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -156,12 +155,12 @@ public class UISelectionMenu {
         int x = 380, y = 170, w = 125, h = 60, x2 = 650;
         bp1Human.setBounds(x, y, w, h);
         bp2Human.setBounds(x2, y, w, h);
-        bp1Ai1.setBounds(x, (int) (y + 100), w, h);
-        bp2Ai1.setBounds(x2, (int) (y + 100), w, h);
-        bp1Ai2.setBounds(x, (int) (y + 200), w, h);
-        bp2Ai2.setBounds(x2, (int) (y + 200), w, h);
-        bp1Ai3.setBounds(x,(int)(y+300),w,h);
-        bp2Ai3.setBounds(x2,(int)(y+300),w,h);
+        bp1Ai1.setBounds(x, y + 100, w, h);
+        bp2Ai1.setBounds(x2, y + 100, w, h);
+        bp1Ai2.setBounds(x, y + 200, w, h);
+        bp2Ai2.setBounds(x2, y + 200, w, h);
+        bp1Ai3.setBounds(x, y+300,w,h);
+        bp2Ai3.setBounds(x2, y+300,w,h);
         buttons[0] = (bp1Human);
         buttons[1] = (bp2Human);
         buttons[2] = (bp1Ai1);
@@ -170,7 +169,6 @@ public class UISelectionMenu {
         buttons[5] = (bp2Ai2);
         buttons[6] = bp1Ai3;
         buttons[7] = bp2Ai3;
-
         return buttons;
     }
 
