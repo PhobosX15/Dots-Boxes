@@ -30,7 +30,6 @@ public class DummyBoard {
         vEdgeOwner = new int[n][n - 1];
         isSetBox = new boolean[n - 1][n - 1];
         boxOwner = new int[n - 1][n - 1];
-        currentPlayer = player1;
         for (int i = 0; i < isSetHEdge.length; i++) {
             for (int j = 0; j < isSetHEdge[0].length; j++) {
                 isSetHEdge[i][j] = false;
@@ -146,7 +145,7 @@ public class DummyBoard {
         return boxUpdated;
     }
 
-    public Edge switchPlayers() {
+    public void switchPlayers() {
         move = null;
         if (currentPlayer.isPlayer1) {
             currentPlayer = player2;
@@ -156,7 +155,6 @@ public class DummyBoard {
             } else if (player2.title.equals("Greedy")) {
                 move = player2.makeMove(this);
             } else if (player2.title.equals("ab")) {
-                System.out.println("Random AIs turn");
                 move = player2.makeMove(this);
             } else {
             }
@@ -166,24 +164,13 @@ public class DummyBoard {
             } else if (player2.title.equals("Minimax")) {
                 move = player2.makeMove(this);
             } else if (player2.title.equals("Greedy")) {
-                System.out.println("Random AIs turn");
                 move = player2.makeMove(this);
             } else if (player2.title.equals("ab")) {
-                System.out.println("Random AIs turn");
                 move = player2.makeMove(this);
             } else {
             }
         }
-        return move;
     }
-
-    public int getScore(boolean isPlayer1) {
-        if (isPlayer1) {
-            return player1.getScore();
-        }
-        return player2.getScore();
-    }
-
     public ArrayList<Edge> getMoves() {
         ArrayList<Edge> moves = new ArrayList<Edge>();
         for (int i = 0; i < isSetHEdge.length; i++) {
@@ -225,7 +212,6 @@ public class DummyBoard {
         return missingLines;
     }
 
-
     private int countEdges(int x, int y) {
         int numberEdges = 0;
         if (isSetHEdge[x][y]) {
@@ -241,6 +227,13 @@ public class DummyBoard {
             numberEdges++;
         }
         return numberEdges;
+    }
+
+    public int getScore(boolean isPlayer1) {
+        if (isPlayer1) {
+            return player1.getScore();
+        }
+        return player2.getScore();
     }
 
     public int calculateScorePlayer1() {

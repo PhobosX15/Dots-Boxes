@@ -14,10 +14,6 @@ public abstract class GameStrategy {
     int twoMissingLine = -3;
     int oneMissingLine = 5;
     int notFilled = 7;
-    int evenChain = 10;
-    int oddChain = 10;
-
-
 
     /**
      * Each Strategy needs to receive a graph to be able to decide where to place an edge

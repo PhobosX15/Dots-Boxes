@@ -9,8 +9,6 @@ import java.awt.event.MouseEvent;
 public class GameBoard {
     public DummyBoard boardstate;
     public JFrame frame;
-    public GameStrategy player1;
-    public GameStrategy player2;
     private int n;
     private JLabel messageLabel;
     private JLabel player1scoreLabel;
@@ -28,19 +26,12 @@ public class GameBoard {
         boardstate.comboBoxIndex = n;
         boardstate.n = getDimension(n);
         this.n = boardstate.n;
-
         this.frame = frame;
         boardstate.player1 = player1;
         boardstate.player2 = player2;
-        this.player1 = player1;
-        this.player2 = player2;
         boardstate.player1.setScore(scorePlayer1);
         boardstate.player2.setScore(scorePlayer2);
         boardstate.currentPlayer = boardstate.player1;
-        if (!player1.title.equals("Human")) {
-            mouseEnabled = false;
-            boardstate.player1.makeMove(boardstate);
-        }
         initializeUIGameBoard();
     }
 
@@ -76,19 +67,19 @@ public class GameBoard {
         messageLabel.setBounds(820, 210, 275, 24);
 
         player1Label.setFont(new java.awt.Font("Arial", 0, 20));
-        player1Label.setForeground(player1.color);
+        player1Label.setForeground(boardstate.player1.color);
         player1Label.setText("Player 1:");
         frame.getContentPane().add(player1Label);
         player1Label.setBounds(820, 30, 89, 24);
 
         player2Label.setFont(new java.awt.Font("Arial", 0, 20));
-        player2Label.setForeground(player2.color);
+        player2Label.setForeground(boardstate.player2.color);
         player2Label.setText("Player 2:");
         frame.getContentPane().add(player2Label);
         player2Label.setBounds(1030, 30, 89, 24);
 
         player1GameStrategyLabel.setFont(new java.awt.Font("Arial", 0, 20));
-        if (player1.title.equals("Human")) {
+        if (boardstate.player1.title.equals("Human")) {
             player1GameStrategyLabel.setText("Human");
         } else {
             player1GameStrategyLabel.setText("AI");
@@ -97,7 +88,7 @@ public class GameBoard {
         player1GameStrategyLabel.setBounds(820, 70, 89, 24);
 
         player2GameStrategyLabel.setFont(new java.awt.Font("Arial", 0, 20));
-        if (player2.title.equals("Human")) {
+        if (boardstate.player2.title.equals("Human")) {
             player2GameStrategyLabel.setText("Human");
         } else {
             player2GameStrategyLabel.setText("AI");
@@ -168,9 +159,9 @@ public class GameBoard {
         for (int i = 0; i < boardstate.isSetHEdge.length; i++) {
             for (int j = 0; j < boardstate.isSetHEdge[0].length; j++) {
                 if (boardstate.hEdgeOwner[i][j] == 1) {
-                    hEdge[i][j].setBackground(player1.color);
+                    hEdge[i][j].setBackground(boardstate.player1.color);
                 } else if (boardstate.hEdgeOwner[i][j] == 2) {
-                    hEdge[i][j].setBackground(player2.color);
+                    hEdge[i][j].setBackground(boardstate.player2.color);
                 }
             }
         }
@@ -178,9 +169,9 @@ public class GameBoard {
         for (int i = 0; i < boardstate.isSetVEdge.length; i++) {
             for (int j = 0; j < boardstate.isSetVEdge[0].length; j++) {
                 if (boardstate.vEdgeOwner[i][j] == 1) {
-                    vEdge[i][j].setBackground(player1.color);
+                    vEdge[i][j].setBackground(boardstate.player1.color);
                 } else if (boardstate.vEdgeOwner[i][j] == 2) {
-                    vEdge[i][j].setBackground(player2.color);
+                    vEdge[i][j].setBackground(boardstate.player2.color);
                 }
             }
         }
@@ -263,7 +254,7 @@ public class GameBoard {
         return grid;
     }
 
-    private JButton newBackToMenuButton() {
+    /*private JButton newBackToMenuButton() {
         ImageIcon exitB = new ImageIcon(UIMainIntro.class.getResource("../images/exit.png"));
         JButton exitButton = new JButton(exitB);
         exitButton.addMouseListener(new MouseAdapter() {
@@ -280,6 +271,28 @@ public class GameBoard {
             @Override
             public void mousePressed(MouseEvent e) {
                 new UISelectionMenu(frame).initializeSelectionMenu();
+            }
+        });
+        exitButton.setBounds(990, 550, 100, 100);
+        return exitButton;
+    }*/
+    private JButton newBackToMenuButton() {
+        ImageIcon exitB = new ImageIcon(UIMainIntro.class.getResource("../images/exit.png"));
+        JButton exitButton = new JButton(exitB);
+        exitButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                exitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
             }
         });
         exitButton.setBounds(990, 550, 100, 100);

@@ -9,22 +9,13 @@ import java.util.ArrayList;
 
 public class UISelectionMenu {
     public JFrame frame;
-    public static ArrayList<JButton> selectStrategyButtons = new ArrayList<>();
-    JTextField textField;
-
     javax.swing.JComboBox<String> gridSizeComboBox;
     int comboBoxIndex = -1;
-
-
-    /**
-     * The following variables are the selection variables
-     */
-    int length = 10;// -1;
+    int length = 10;
     GameStrategy player1 = new Game_Strategy_Human(true, Color.CYAN);
-    GameStrategy player2 = new Game_Strategy_Human(false, Color.GREEN); /// neeeds to be fixed
+    GameStrategy player2 = new Game_Strategy_Human(false, Color.GREEN);
     JLabel gameLabel = getGameLabel();
     GameBoard gameBoard;
-    public boolean isNotGamePlay = true;
 
     public UISelectionMenu(JFrame frame) {
         this.frame = frame;
@@ -32,36 +23,28 @@ public class UISelectionMenu {
     }
 
     public void initializeSelectionMenu() {
-
         frame.getContentPane().removeAll();
         frame.revalidate();
         frame.repaint();
-
         //Add what we need to this menu here
         JPanel backgroundImagePanel = getBackgroundImagePanel();
         JButton startGameButton = getStartGameButton();
-
         gridSizeComboBox = new javax.swing.JComboBox<>();
-        gridSizeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3 x 3", "4 x 4", "5 x 5", "7 x 7", "8 x 8" }));
+        gridSizeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"3 x 3", "4 x 4", "5 x 5", "7 x 7", "8 x 8"}));
         Font BoxFont = new Font("Arial", Font.PLAIN, 20);
         gridSizeComboBox.setFont(BoxFont);
         gridSizeComboBox.setBackground(Color.white);
         gridSizeComboBox.setForeground(Color.gray.brighter());
         gridSizeComboBox.setBounds(400, 30, 400, 30);
-
         frame.setContentPane(backgroundImagePanel);
         frame.add(startGameButton);
-
         frame.add(gridSizeComboBox);
-
         frame.add(gameLabel);
         JButton[] buttons = getSelectorButtons();
         for (int i = 0; i < buttons.length; i++) {
             frame.add(buttons[i]);
         }
-        //Then final step
         frame.setVisible(true);
-
     }
 
     private JLabel getGameLabel() {
