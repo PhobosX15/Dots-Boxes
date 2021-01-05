@@ -1,12 +1,7 @@
 package UI;
-import java.awt.Color;
 import java.util.ArrayList;
-
-import javax.swing.JLabel;
-
 import Game.strategy.GameStrategy;
-import UI.Edge;
-import UI.GameBoard;
+
 
 public class DummyBoard {
 
@@ -16,11 +11,8 @@ public class DummyBoard {
     public int n;
     public int possibleBoxCount;
 
-    public int edgeAndDotWidth2;
-    public int edgeLength2;
     public int scorePlayer1 = 0;
     public int scorePlayer2 = 0;
-    public boolean ai1, ai2 = true;
     public int comboBoxIndex;
     Edge move;
 
@@ -133,7 +125,7 @@ public class DummyBoard {
             }
 
         }else {
-            //move=player2.makeMove(this);
+
         }
 
     }
@@ -142,8 +134,7 @@ public class DummyBoard {
 
         if (fillEdge(location)) {
             if (!onlyFillBoxIfPossible()) {
-                //switchPlayers();
-                //currentPlayer.makeMove(this);
+
             }else {
                 move=null;
                 currentPlayer.makeMove(this);
@@ -225,8 +216,7 @@ public class DummyBoard {
                 System.out.println("Random AIs turn");
 
                 move =   player2.makeMove(this);
-                //processMove(move);
-                // currentPlayer=player2;
+
             }else if(player2.title.equals("ab")){
                 System.out.println("Random AIs turn");
 
@@ -360,31 +350,6 @@ public class DummyBoard {
         return res;
     }
 
-    public Edge findNewLine(ArrayList<Edge> parentEdges, ArrayList<Edge> childEdges){
-
-        Edge arbitraryEdge = null;
-
-        for(Edge edge : parentEdges){
-            if(childEdges.contains(edge) == false){
-                return  edge;
-            }
-        }
-        if(arbitraryEdge == null){
-            return childEdges.get(0);
-        }
-
-        return arbitraryEdge;
-    }
-
-    public static GameStrategy switchTurn(GameStrategy currentPlayer){
-        if(currentPlayer.isPlayer1){
-            currentPlayer.isPlayer1 = false;
-            return currentPlayer;//set player 2 true
-        }else{
-            currentPlayer.isPlayer1 = true;
-            return currentPlayer;
-        }
-    }
 
     public int calculateScorePlayer1() {
         int score=0;
