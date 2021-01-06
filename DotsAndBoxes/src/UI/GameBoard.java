@@ -292,7 +292,20 @@ public class GameBoard {
 
             @Override
             public void mousePressed(MouseEvent e) {
+                if(!boardstate.currentPlayer.title.equals("Human")){
+                    mouseEnabled=false;
+                }
+                int x = 0;
+                while (x < 6) {//boardstate.getMoves().size() > 0
+                    x++;
+                    if (!GameBoard.mouseEnabled) {
+                        boardstate.move = boardstate.currentPlayer.makeMove(boardstate);
+                        boardstate.processMove(boardstate.move);
+                        SwingUtilities.invokeLater(() -> updateLabels());
 
+                    }
+                    mouseEnabled = boardstate.currentPlayer.title.equals("Human");
+                }
             }
         });
         exitButton.setBounds(990, 550, 100, 100);

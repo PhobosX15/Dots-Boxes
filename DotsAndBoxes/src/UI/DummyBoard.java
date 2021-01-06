@@ -81,19 +81,10 @@ public class DummyBoard {
         this.player2 = realboard.player2;
     }
 
-    public void processPlayerMove(Edge location) {
+    public void processMove(Edge location) {
         fillEdge(location);
         if (!onlyFillBoxIfPossible()) {
             switchPlayers();
-        }
-    }
-
-    public void processAIMove(Edge location) {
-        fillEdge(location);
-        if (!onlyFillBoxIfPossible()) {
-            switchPlayers();
-        } else {
-            move = player2.makeMove(this);
         }
     }
 
@@ -146,43 +137,24 @@ public class DummyBoard {
     }
 
     public void switchPlayers() {
-        move = null;
-        if (currentPlayer.isPlayer1) {
+        if(currentPlayer.isPlayer1){
             currentPlayer = player2;
-            if (player2.title.equals("Human")) {
-            } else if (player2.title.equals("Minimax")) {
-                move = player2.makeMove(this);
-            } else if (player2.title.equals("Greedy")) {
-                move = player2.makeMove(this);
-            } else if (player2.title.equals("ab")) {
-                move = player2.makeMove(this);
-            } else {
-            }
-        } else {
+        }else{
             currentPlayer = player1;
-            if (player1.title.equals("Human")) {
-            } else if (player2.title.equals("Minimax")) {
-                move = player2.makeMove(this);
-            } else if (player2.title.equals("Greedy")) {
-                move = player2.makeMove(this);
-            } else if (player2.title.equals("ab")) {
-                move = player2.makeMove(this);
-            } else {
-            }
         }
     }
     public ArrayList<Edge> getMoves() {
         ArrayList<Edge> moves = new ArrayList<Edge>();
         for (int i = 0; i < isSetHEdge.length; i++) {
             for (int j = 0; j < isSetHEdge[0].length; j++) {
-                if (isSetHEdge[i][j] == false) {
+                if (!isSetHEdge[i][j]) {
                     moves.add(new Edge(i, j, true));
                 }
             }
         }
         for (int i = 0; i < isSetVEdge.length; i++) {
             for (int j = 0; j < isSetVEdge[0].length; j++) {
-                if (isSetVEdge[i][j] == false) {
+                if (!isSetVEdge[i][j]) {
                     moves.add(new Edge(i, j, false));
                 }
             }

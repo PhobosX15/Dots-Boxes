@@ -14,12 +14,10 @@ public class MouseListenerHuman implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         if (!gameBoard.mouseEnabled) return;
-        gameBoard.boardstate.processPlayerMove(gameBoard.getSourceEdge(mouseEvent.getSource()));
+        gameBoard.boardstate.move = gameBoard.getSourceEdge(mouseEvent.getSource());
+        gameBoard.boardstate.processMove(gameBoard.boardstate.move);
         gameBoard.updateLabels();
-        while (gameBoard.boardstate.move != null && gameBoard.boardstate.getMoves().size() > 0) {
-            gameBoard.boardstate.processAIMove(gameBoard.boardstate.move);
-        }
-        gameBoard.updateLabels();
+        gameBoard.mouseEnabled=false;
     }
 
     @Override
