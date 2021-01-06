@@ -1,6 +1,7 @@
 package UI;
 
 import Game.strategy.GameStrategy;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -18,7 +19,7 @@ public class GameBoard {
     public int scorePlayer1 = 0;
     public int scorePlayer2 = 0;
     public JLabel[][] hEdge, vEdge, box;
-    public static boolean mouseEnabled = true;
+    public static boolean mouseEnabled = false;
     private MouseListenerHuman mouseListener = new MouseListenerHuman(this);
 
     public GameBoard(int n, JFrame frame, GameStrategy player1, GameStrategy player2) {
@@ -52,16 +53,14 @@ public class GameBoard {
         frame.revalidate();
         frame.repaint();
         frame.getContentPane().setLayout(null);
+        frame.getContentPane().add(nextMoveButton());
         frame.getContentPane().add(newBackToMenuButton());
         frame.getContentPane().add(drawNewBoard());
 
         messageLabel.setFont(new java.awt.Font("Arial", 0, 20));
         if (boardstate.currentPlayer.isPlayer1) {
-            messageLabel.setForeground(boardstate.player1.color);
-            messageLabel.setText("Player 1's turn.");
-        } else {
-            messageLabel.setForeground(boardstate.player2.color);
-            messageLabel.setText("Player 2's turn.");
+            messageLabel.setForeground(Color.BLACK);
+            messageLabel.setText("Press to begin");
         }
         frame.getContentPane().add(messageLabel);
         messageLabel.setBounds(820, 210, 275, 24);
@@ -82,7 +81,7 @@ public class GameBoard {
         if (boardstate.player1.title.equals("Human")) {
             player1GameStrategyLabel.setText("Human");
         } else {
-            player1GameStrategyLabel.setText("AI");
+            player1GameStrategyLabel.setText(boardstate.player1.title);
         }
         frame.getContentPane().add(player1GameStrategyLabel);
         player1GameStrategyLabel.setBounds(820, 70, 89, 24);
@@ -91,7 +90,7 @@ public class GameBoard {
         if (boardstate.player2.title.equals("Human")) {
             player2GameStrategyLabel.setText("Human");
         } else {
-            player2GameStrategyLabel.setText("AI");
+            player2GameStrategyLabel.setText(boardstate.player2.title);
         }
         frame.getContentPane().add(player2GameStrategyLabel);
         player2GameStrategyLabel.setBounds(1030, 70, 89, 24);
@@ -135,7 +134,23 @@ public class GameBoard {
     public void updateLabels() {
         int scoreplayer1 = 0;
         int scoreplayer2 = 0;
-        if (boardstate.currentPlayer.isPlayer1) {
+        boolean gameOver = boardstate.getMoves().size()==0;
+        if(gameOver){
+            GameStrategy winner;
+            if(boardstate.calculateScorePlayer1()>boardstate.calculateScorePlayer2()){
+                winner = boardstate.player1;
+                messageLabel.setText(winner.title + " Wins");
+                messageLabel.setForeground(boardstate.player1.color);
+            }else if(boardstate.calculateScorePlayer1()<boardstate.calculateScorePlayer2()){
+                winner =boardstate.player2;
+                messageLabel.setText( winner.title + " Wins");
+                messageLabel.setForeground(boardstate.player2.color);
+            }else {
+                messageLabel.setText("DRAW!");
+                messageLabel.setForeground(Color.BLACK);
+            }
+
+        }else if (boardstate.currentPlayer.isPlayer1) {
             messageLabel.setForeground(boardstate.player1.color);
             messageLabel.setText("Player 1's turn.");
         } else {
@@ -254,7 +269,7 @@ public class GameBoard {
         return grid;
     }
 
-    /*private JButton newBackToMenuButton() {
+    private JButton newBackToMenuButton() {
         ImageIcon exitB = new ImageIcon(UIMainIntro.class.getResource("../images/exit.png"));
         JButton exitButton = new JButton(exitB);
         exitButton.addMouseListener(new MouseAdapter() {
@@ -273,42 +288,37 @@ public class GameBoard {
                 new UISelectionMenu(frame).initializeSelectionMenu();
             }
         });
-        exitButton.setBounds(990, 550, 100, 100);
+        exitButton.setBounds(30, 550, 100, 100);
         return exitButton;
-    }*/
-    private JButton newBackToMenuButton() {
-        ImageIcon exitB = new ImageIcon(UIMainIntro.class.getResource("../images/exit.png"));
-        JButton exitButton = new JButton(exitB);
-        exitButton.addMouseListener(new MouseAdapter() {
+    }
+    private JButton nextMoveButton() {
+        ImageIcon exitB = new ImageIcon(UIMainIntro.class.getResource("../images/start.png"));
+        JButton nextPlayButton = new JButton(exitB);
+        nextPlayButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                nextPlayButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                exitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                nextPlayButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if(!boardstate.currentPlayer.title.equals("Human")){
-                    mouseEnabled=false;
+                mouseEnabled = boardstate.currentPlayer.title.equals("Human");
+                if (!GameBoard.mouseEnabled) {
+                    boardstate.move = boardstate.currentPlayer.makeMove(boardstate);
+                    boardstate.processMove(boardstate.move);
+                    SwingUtilities.invokeLater(() -> updateLabels());
                 }
-                int x = 0;
-                while (x < 1) {//boardstate.getMoves().size() > 0
-                    x++;
-                    if (!GameBoard.mouseEnabled) {
-                        boardstate.move = boardstate.currentPlayer.makeMove(boardstate);
-                        boardstate.processMove(boardstate.move);
-                        SwingUtilities.invokeLater(() -> updateLabels());
-                    }
-                    mouseEnabled = boardstate.currentPlayer.title.equals("Human");
-                }
+                mouseEnabled = boardstate.currentPlayer.title.equals("Human");
             }
+
         });
-        exitButton.setBounds(990, 550, 100, 100);
-        return exitButton;
+        nextPlayButton.setBounds(990, 550, 100, 100);
+        return nextPlayButton;
     }
 
     public Edge getSourceEdge(Object object) {

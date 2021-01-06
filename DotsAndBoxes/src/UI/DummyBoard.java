@@ -81,11 +81,13 @@ public class DummyBoard {
         this.player2 = realboard.player2;
     }
 
-    public void processMove(Edge location) {
+    public boolean processMove(Edge location) {
         fillEdge(location);
-        if (!onlyFillBoxIfPossible()) {
+        boolean boxFilled = onlyFillBoxIfPossible();
+        if (!boxFilled) {
             switchPlayers();
         }
+        return  boxFilled;
     }
 
     public void processAIMove2(Edge location) {

@@ -72,7 +72,7 @@ public class UISelectionMenu {
                 updateGameLabel();
             }
         });
-        ImageIcon p1Ai1 = new ImageIcon(UIMainIntro.class.getResource("../images/Ai 1 button.png"));
+        ImageIcon p1Ai1 = new ImageIcon(UIMainIntro.class.getResource("../images/MiniMaxButton.png"));
         JButton bp1Ai1 = new JButton(p1Ai1);
         bp1Ai1.addMouseListener(new MouseAdapter() {
             @Override
@@ -81,7 +81,7 @@ public class UISelectionMenu {
                 updateGameLabel();
             }
         });
-        ImageIcon p1Ai2 = new ImageIcon(UIMainIntro.class.getResource("../images/Ai 2 button.png"));
+        ImageIcon p1Ai2 = new ImageIcon(UIMainIntro.class.getResource("../images/GreedyButton.png"));
         JButton bp1Ai2 = new JButton(p1Ai2);
         bp1Ai2.addMouseListener(new MouseAdapter() {
             @Override
@@ -108,7 +108,7 @@ public class UISelectionMenu {
                 updateGameLabel();
             }
         });
-        ImageIcon p2Ai1 = new ImageIcon(UIMainIntro.class.getResource("../images/Ai 1 button.png"));
+        ImageIcon p2Ai1 = new ImageIcon(UIMainIntro.class.getResource("../images/MiniMaxButton.png"));
         JButton bp2Ai1 = new JButton(p2Ai1);
         bp2Ai1.addMouseListener(new MouseAdapter() {
             @Override
@@ -117,7 +117,7 @@ public class UISelectionMenu {
                 updateGameLabel();
             }
         });
-        ImageIcon p2Ai2 = new ImageIcon(UIMainIntro.class.getResource("../images/Ai 2 button.png"));
+        ImageIcon p2Ai2 = new ImageIcon(UIMainIntro.class.getResource("../images/GreedyButton.png"));
         JButton bp2Ai2 = new JButton(p2Ai2);
         bp2Ai2.addMouseListener(new MouseAdapter() {
             @Override
