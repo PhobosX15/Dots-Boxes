@@ -5,13 +5,13 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class UIMainIntro {
+public class UIMainIntro implements Runnable{
 
     public static final int SCREEN_WIDTH = 1170;
     public static final int SCREEN_HEIGHT = 720;
 
     public static void main(String[] args) {
-        new UIMainIntro();
+        SwingUtilities.invokeLater(new UIMainIntro());
     }
 
     public void initializeIntroScreen(JFrame frame) {
@@ -72,7 +72,8 @@ public class UIMainIntro {
         return start;
     }
 
-    public UIMainIntro() {
+    @Override
+    public void run() {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);

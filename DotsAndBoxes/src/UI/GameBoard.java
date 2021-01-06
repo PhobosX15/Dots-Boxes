@@ -296,13 +296,12 @@ public class GameBoard {
                     mouseEnabled=false;
                 }
                 int x = 0;
-                while (x < 6) {//boardstate.getMoves().size() > 0
+                while (x < 1) {//boardstate.getMoves().size() > 0
                     x++;
                     if (!GameBoard.mouseEnabled) {
                         boardstate.move = boardstate.currentPlayer.makeMove(boardstate);
                         boardstate.processMove(boardstate.move);
                         SwingUtilities.invokeLater(() -> updateLabels());
-
                     }
                     mouseEnabled = boardstate.currentPlayer.title.equals("Human");
                 }
